@@ -9,10 +9,9 @@ string unidadesPath = "data/unidades.txt";
 // Lê os dados dos caminhões
 using (StreamReader reader = new StreamReader(caminhoesPath))
 {
-    string line;
+    string? line;
     while ((line = reader.ReadLine()) != null)
     {
-        // Process each line
-        Console.WriteLine(line);  // Example: print the line
+        Console.WriteLine(line);
     }
 }
