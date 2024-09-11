@@ -20,6 +20,7 @@ namespace Logistica
         public string GetPlate() { return _plate; }
         public int GetCapacity() { return _capacity; }
 
+        // agora é usado pra debug, talvez não tenha uso mais tarde
         public override string ToString()
         {
             return $"Truck Plate: {_plate}, Capacity: {_capacity}";
