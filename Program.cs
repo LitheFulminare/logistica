@@ -69,9 +69,11 @@ using (StreamReader reader = new StreamReader(produtosPath))
 
 // printa dos dados de todos os produtos
 
-Console.WriteLine($"Product count: {products.Count}");
 Console.WriteLine($"First product in the queue: {products.First()}");
-Console.WriteLine($"Last product in the queue: {products.Last()}");
+Console.WriteLine($"Product count: {products.Count}");
+products.Dequeue();
+Console.WriteLine($"Fist product after dequeue: {products.First()}");
+Console.WriteLine($"Product count: {products.Count}");
 
 //Console.WriteLine("\n--- Lista de Produtos ---");
 //foreach (var product in products)
