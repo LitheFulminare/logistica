@@ -3,9 +3,9 @@ using System;
 using System.IO;
 
 // paths dos arquivos
-string caminhoesPath = "data/caminhoes.txt";
-string produtosPath = "data/produtos.txt";
-string unidadesPath = "data/unidades.txt";
+string caminhoesPath = "data/caminhoes.txt"; // plate, capacity
+string produtosPath = "data/produtos.txt"; // cost, weight
+string unidadesPath = "data/unidades.txt"; // code, distance, capacity
 
 List<Truck> trucks = new List<Truck>();
 
@@ -22,7 +22,7 @@ using (StreamReader reader = new StreamReader(caminhoesPath))
         string? capacityStr = reader.ReadLine();
 
         // tenta transformar a string capacidade num 'int'
-        // cria novo obj 'Truck' usando os dados q acabou de ler e adciona a lista
+        // cria nova intancia do obj 'Truck' usando os dados q acabou de ler e adciona a lista
         if (int.TryParse(capacityStr, out int capacity))
         {
             

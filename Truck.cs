@@ -8,6 +8,7 @@ namespace Logistica
 {
     internal class Truck
     {
+        // dados extraidos do arquivo 'data/caminhoes.txt'
         private string _plate;
         private int _capacity;
 
