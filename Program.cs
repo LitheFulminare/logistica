@@ -1,6 +1,7 @@
 ﻿using Logistica;
 using System;
 using System.IO;
+using System.Reflection.PortableExecutable;
 
 // paths dos arquivos
 string caminhoesPath = "data/caminhoes.txt"; // plate, capacity
@@ -13,16 +14,16 @@ Queue<Product> products = new Queue<Product>(); // fila de produtos
 List<Unit> units = new List<Unit>(); // lista de unidades
 
 // lê os dados dos caminhões
-using (StreamReader trucksReader = new StreamReader(caminhoesPath))
+using (StreamReader reader = new StreamReader(caminhoesPath))
 {
     string? plate;
 
     // lê a linha que contém a placa do caminhão (eu espero)
-    while ((plate = trucksReader.ReadLine()) != null)
+    while ((plate = reader.ReadLine()) != null)
     {
 
         // lê a proxima linha, q na teoria deve ser a capacidade do caminhao
-        string? capacityStr = trucksReader.ReadLine();
+        string? capacityStr = reader.ReadLine();
 
         // transforma a string capacidade num 'int'
         // cria nova intancia do obj 'Truck' usando os dados q acabou de ler e adciona a lista
@@ -35,19 +36,19 @@ using (StreamReader trucksReader = new StreamReader(caminhoesPath))
 }
 
 // lê os dados dos produtos
-using (StreamReader productsReader = new StreamReader(produtosPath))
+using (StreamReader reader = new StreamReader(produtosPath))
 {
     string? weightStr;
 
     // lê a linha que contém o valor do produto
-    while ((weightStr = productsReader.ReadLine()) != null)
+    while ((weightStr = reader.ReadLine()) != null)
     {
 
         int weight = 0;
         if (weightStr != null) { weight = int.Parse(weightStr); }
 
         // lê a proxima linha, o peso do produto
-        string? valueStr = productsReader.ReadLine();
+        string? valueStr = reader.ReadLine();
 
         // tenta transformar a string weight num 'int'
         int value = 0;
