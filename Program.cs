@@ -7,8 +7,9 @@ string caminhoesPath = "data/caminhoes.txt"; // plate, capacity
 string produtosPath = "data/produtos.txt"; // value, weight
 string unidadesPath = "data/unidades.txt"; // code, distance, capacity
 
+// os dois sao fila porque o primeiro a ser lido vai ser o primeiro da fila
 Queue<Truck> trucks = new Queue<Truck>(); // fila de caminhoes
-List<Product> products = new List<Product>(); // pilha de produtos
+Queue<Product> products = new Queue<Product>(); // fila de produtos
 List<Unit> units = new List<Unit>(); // lista de unidades
 
 // lê os dados dos caminhões
@@ -33,9 +34,6 @@ using (StreamReader trucksReader = new StreamReader(caminhoesPath))
     }
 }
 
-// debug
-int i = 0;
-
 // lê os dados dos produtos
 using (StreamReader productsReader = new StreamReader(produtosPath))
 {
@@ -44,9 +42,6 @@ using (StreamReader productsReader = new StreamReader(produtosPath))
     // lê a linha que contém o valor do produto
     while ((weightStr = productsReader.ReadLine()) != null)
     {
-        // debug
-        //i++;
-        //Console.WriteLine($"loop iteration {i}");
 
         int weight = 0;
         if (weightStr != null) { weight = int.Parse(weightStr); }
@@ -60,7 +55,7 @@ using (StreamReader productsReader = new StreamReader(produtosPath))
 
         // cria nova intancia do obj 'Product' usando os dados q acabou de ler e adciona a lista
         Product product = new Product(weight, value);
-        products.Add(product);
+        products.Enqueue(product);
     }
 }
 
@@ -72,9 +67,13 @@ using (StreamReader productsReader = new StreamReader(produtosPath))
 //}
 
 // printa dos dados de todos os produtos
+
 Console.WriteLine($"Product count: {products.Count}");
-Console.WriteLine("\n--- Lista de Produtos ---");
-foreach (var product in products)
-{
-    Console.WriteLine(product);
-}
+Console.WriteLine($"First product in the queue: {products.First()}");
+Console.WriteLine($"Last product in the queue: {products.Last()}");
+
+//Console.WriteLine("\n--- Lista de Produtos ---");
+//foreach (var product in products)
+//{
+//    Console.WriteLine(product);
+//}
