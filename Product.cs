@@ -9,22 +9,23 @@ namespace Logistica
     internal class Product
     {
         // dados extraidos do arquivo 'data/produtos.txt'
-        private int _value;
         private int _weight;
+        private int _value;
 
-        public Product(int value, int weight)
+        public Product(int weight, int value)
         {
-            this._value = value;
             this._weight = weight;
+            this._value = value;
         }
 
-        public int GetValue() { return _value; }
         public int GetWeight() { return _weight; }
+        public int GetValue() { return _value; }
+
 
         // agora é usado pra debug, talvez não tenha uso mais tarde
         public override string ToString()
         {
-            return $"Product Value: {_value}, Weight: {_weight}";
+            return $"Product Weight: {_weight}, Value: {_value}";
         }
     }
 }
