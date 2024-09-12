@@ -8,9 +8,8 @@ string caminhoesPath = "data/caminhoes.txt"; // plate, capacity
 string produtosPath = "data/produtos.txt"; // value, weight
 string unidadesPath = "data/unidades.txt"; // code, distance, capacity
 
-// os dois sao fila porque o primeiro a ser lido vai ser o primeiro da fila
-Queue<Truck> trucks = new Queue<Truck>(); // fila de caminhoes
-Queue<Product> products = new Queue<Product>(); // fila de produtos
+List<Truck> trucks = new List<Truck>(); // lista de caminhoes -> para poder mover para o final
+Queue<Product> products = new Queue<Product>(); // fila de produtos -> para poder remover o produto da fila
 List<Unit> units = new List<Unit>(); // lista de unidades
 
 // lê os dados dos caminhões
@@ -30,7 +29,7 @@ using (StreamReader reader = new StreamReader(caminhoesPath))
         int capacity = 0;
         if (capacityStr != null) { capacity = int.Parse(capacityStr); }
         Truck truck = new Truck(plate, capacity);
-        trucks.Enqueue(truck);
+        trucks.Add(truck);
         
     }
 }
@@ -60,23 +59,38 @@ using (StreamReader reader = new StreamReader(produtosPath))
     }
 }
 
-// printa os dados de todos os caminhoes
+// CAMINHÕES
+
+//Console.WriteLine($"First truck on the list: {trucks[0]}");
+//Console.WriteLine($"Last truck on the list: {trucks[trucks.Count-1]}");
+
+//// joga o primeiro caminhao para o final
+//Truck removedTruck = trucks[0];
+//trucks.RemoveAt(0);
+//trucks.Add(removedTruck);
+
+//Console.WriteLine($"Removed truck: {removedTruck}");
+//Console.WriteLine($"Last truck on the list: {trucks[trucks.Count - 1]}");
+
 //Console.WriteLine("--- Lista de Caminhões ---");
 //foreach (var truck in trucks)
 //{
 //    Console.WriteLine(truck);
 //}
 
-// printa dos dados de todos os produtos
 
-Console.WriteLine($"First product in the queue: {products.First()}");
-Console.WriteLine($"Product count: {products.Count}");
-products.Dequeue();
-Console.WriteLine($"Fist product after dequeue: {products.First()}");
-Console.WriteLine($"Product count: {products.Count}");
+// PRODUTOS
 
-//Console.WriteLine("\n--- Lista de Produtos ---");
-//foreach (var product in products)
-//{
-//    Console.WriteLine(product);
-//}
+//Console.WriteLine($"First product in the queue: {products.First()}");
+//Console.WriteLine($"Product count: {products.Count}");
+//products.Dequeue();
+//Console.WriteLine($"Fist product after dequeue: {products.First()}");
+//Console.WriteLine($"Product count: {products.Count}");
+
+Console.WriteLine("\n--- Lista de Produtos ---");
+foreach (var product in products)
+{
+    Console.WriteLine(product);
+}
+
+// UNIDADES
