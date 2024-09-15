@@ -11,6 +11,7 @@ string unidadesPath = "data/unidades.txt"; // code, distance, capacity
 List<Truck> trucks = new List<Truck>(); // lista de caminhoes -> mover o caminhão para o final para o final
 Queue<Product> products = new Queue<Product>(); // fila de produtos -> para poder remover o produto da fila
 List<Unit> units = new List<Unit>(); // lista de unidades -> não vai ser necessário mexer na ordem delas ou retirar unidades da lista
+List<Unit> availableUnits = new List<Unit>();
 
 // lê os dados dos caminhões
 using (StreamReader reader = new StreamReader(caminhoesPath))
@@ -86,6 +87,9 @@ using (StreamReader reader = new StreamReader(unidadesPath))
         Unit unit = new Unit(code, distance, capacity);
         units.Add(unit);
     }
+
+    // this is called when the reades has finished reading the file
+    availableUnits = units; // sets all units as available
 }
 
 // CAMINHÕES
@@ -126,6 +130,7 @@ Console.WriteLine($"Product count: {products.Count}");
 //}
 
 // UNIDADES
+//units.RemoveAt(0);
 //Console.WriteLine("\n--- Lista de Unidades ---");
 //foreach (var unit in units)
 //{

@@ -13,6 +13,9 @@ namespace Logistica
         private int _capacity;
 
         // outros dados
+
+        private List<Product> productsLoaded = new List<Product>(); // produtos que o caminhão está carregando no momento
+
         private int _usedCapacity = 0;
         private int _unusedCapacity = 0;
         private int _productCount = 0; // protocolo 4 exige um máximo de 50 produtos no caminhão
