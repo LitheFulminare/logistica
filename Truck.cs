@@ -48,10 +48,11 @@ namespace Logistica
                 Console.WriteLine($"Remaining capacity: {_remainingCapacity}");
                 return true;
             }
-            else // retorna false para Program saber que não tem mais espaço
+            else // retorna false para o Program saber que não tem mais espaço
             {
+                _unusedCapacity += _remainingCapacity; // vai guardando quantos kgs ficaram livres depois de cada viagem
                 Console.WriteLine("Product wasn't added");
-                Console.WriteLine($"Remaining capacity: {_remainingCapacity}");
+                Console.WriteLine($"Unused capacity: {_unusedCapacity}");
                 return false;               
             }
         }
@@ -59,6 +60,7 @@ namespace Logistica
         // propriedades
         public string Plate => _plate;
         public int Capacity => _capacity;
+        public int UnusedCapacity => _unusedCapacity;
 
         // agora é usado pra debug, talvez não tenha uso mais tarde
         public override string ToString()
