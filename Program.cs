@@ -137,7 +137,27 @@ void Load()
 // manda esse caminhão para a unidade correta
 void SendToUnit()
 {
-    //trucks.First();
+    bool hasEnoughCapacity = false;
+
+    foreach (var unit in availableUnits)
+    {
+        Console.WriteLine($"\nUnit capacity: {availableUnits[0].Capacity}");
+
+        if (trucks.First().UsedCapacity <= availableUnits[0].Capacity)
+        {
+            hasEnoughCapacity = true;
+            Console.WriteLine($"Unit has enough capacity");
+            break;
+        }
+        else
+        {
+            Console.WriteLine($"Unit doesn't have enough capacity");
+        }
+    }
+    if (hasEnoughCapacity)
+    {
+        Console.WriteLine($"\nTruck of plate {trucks.First().Plate} will be sent to unit of code {availableUnits[0].Code}");
+    }
 }
 
 // manda o primeiro caminhao para o final da fila
