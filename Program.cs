@@ -19,7 +19,14 @@ List<Unit> availableUnits = new List<Unit>();
 
 // dados medidos para responder as perguntas de 1 a 4
 int travelledDistance = 0;
+
 Truck mostValuableTruck = null; // caminhão que fez a carga de maior valor (será usado a placa dele depois)
+int mostValuableLoad = 0; // usado pra definir o caminhão mais valioso (o de cima)
+
+Unit heaviestUnit = null; // unidade que recebeu maior tanto em kg no total
+int highestTotalWeight = 0; // usado pra definir o de cima
+
+int totalUnusedCapacity = 0; // guarda quanto de espaço não foi usado depois de cada viagem (apenas a ida é contabilizada, a volta é ignorada)
 
 // lê os dados dos caminhões
 using (StreamReader reader = new StreamReader(caminhoesPath))
@@ -127,13 +134,20 @@ while (!truckLoaded) // debug -> provavelmente não vai ser usado assim no cod. 
 // depois chama SendToUnit(), que manda esses caminhões para as unidades
 void Load() 
 {
-    bool canHoldProduct = trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight);
-
     // se o caminhão tiver espaço, ele carrega o item
     if (trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight))
     {
         //Console.WriteLine("Dequeue was called");
         remainingProducts.Dequeue();
+        if (remainingProducts.Count() == 0)
+        {
+            Console.WriteLine("\nTruck loaded");
+            Console.WriteLine("No products left");
+            Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
+            Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
+            //truckLoaded = true;
+            CheckAvailableUnits();
+        }
     }
     // se não tiver espaço ele é mandado para a unidade
     else // protocolo 2 vai mudar as coisas aqui
@@ -189,21 +203,28 @@ void SendToUnit(int unitIndex)
 {  
     Console.WriteLine($"Truck of plate {trucks.First().Plate} will be sent to unit of code {availableUnits[unitIndex].Code}");
 
+    checkLoadValue(); // checa se esse descarregamento foi o mais caro
+
+    units[unitIndex].addLoad(trucks.First().UsedCapacity); // adciona a unidade o tanto que ela tá recebendo em kg
+
+    checkTotalWeight(units[unitIndex]); // checa de essa mesma unidade é a que mais recebeu
+
+    totalUnusedCapacity += trucks.First().UnusedCapacity;
+
     travelledDistance += availableUnits[unitIndex].Distance * 2; // x2 porque deve contar distancia de ida e volta
 
     Console.WriteLine($"Travelled distance: {travelledDistance}");
 
     availableUnits.RemoveAt(unitIndex);
-    SendTruckToLast();
-
-    
+    SendTruckToLast(); 
 }
 
 // manda o primeiro caminhao para o final da fila
 void SendTruckToLast()
 {
     Truck removedtruck = trucks[0];
-    removedtruck.ResetCapacity();
+    removedtruck.ResetStorage();
+    removedtruck.ResetValue();
     trucks.RemoveAt(0);
     trucks.Add(removedtruck);
     if (remainingProducts.Count > 0)
@@ -214,7 +235,29 @@ void SendTruckToLast()
     }
 }
 
+// chamado por 'SendToUnit(int unitIndex)', guarda o caminhão mais valioso
+void checkLoadValue()
+{
+    if (trucks.First().TotalValue > mostValuableLoad)
+    {
+        mostValuableLoad = trucks.First().TotalValue;
+        mostValuableTruck = trucks.First();
+    }
+}
 
+// chamado por 'SendToUnit(int unitIndex)', guarda a unidade que mais recebeu em kg
+void checkTotalWeight(Unit unit)
+{
+    if (unit.TotalLoadReceived > highestTotalWeight)
+    {
+        heaviestUnit = unit;
+    }
+}
+
+Console.WriteLine($"\n1 - Placa do caminhão que fez a carga de maior valor: {mostValuableTruck.Plate}");
+Console.WriteLine($"2 - Unidade que recebeu maior qtd em kgs: {heaviestUnit.Code}");
+Console.WriteLine($"3 - Quilometros percorridos de ida e volta: {travelledDistance}");
+Console.WriteLine($"4 - Quilos de capacidade não utilizados: {totalUnusedCapacity}");
 
 // ---------------------------------------------------
 // --------------------- DEBUG -----------------------

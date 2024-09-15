@@ -18,40 +18,41 @@ namespace Logistica
 
         private int _remainingCapacity = 0;
         private int _unusedCapacity = 0;
-        private int _profit = 0; // reseta pra 0 depois de descarregar
+        private int _totalValue = 0; // reseta pra 0 depois de descarregar
 
         public Truck(string plate, int capacity)
         {
             this._plate = plate;
             this._capacity = capacity;
-            ResetCapacity(); // faz 'remainingCapacity' ser igual a 'capacity'
+            ResetStorage(); // faz 'remainingCapacity' ser igual a 'capacity'
         }
 
         // reseta a capaciade usada para seu valor original
         // chamado da primeira vez que é construído e quando volta para o final da fila
-        public void ResetCapacity()
+        public void ResetStorage()
         {
             _remainingCapacity = _capacity;
+        }
+        public void ResetValue()
+        {
+            _totalValue = 0;
         }
 
         // chamado por Load()
         public bool Load(Product product, int productWeight)
         {
-            if (_remainingCapacity > productWeight) 
+            if (_remainingCapacity > product.Weight) 
             {
-                // adciona o produto e contabiliza seu peso
-                _remainingCapacity -= productWeight;
+                // adciona o produto a lista, contabiliza seu peso e valor
+                _remainingCapacity -= product.Weight;
+                _totalValue += product.Value;
                 loadedProducts.Add(product);
 
-                //Console.WriteLine("Product was successfully added");
-                //Console.WriteLine($"Remaining capacity: {_remainingCapacity}");
                 return true;
             }
             else // retorna false para o Program saber que não tem mais espaço
             {
                 _unusedCapacity += _remainingCapacity; // vai guardando quantos kgs ficaram livres depois de cada viagem
-                //Console.WriteLine("Product wasn't added");
-                //Console.WriteLine($"Remaining capacity: {_remainingCapacity}");
                 return false;               
             }
         }
@@ -61,6 +62,7 @@ namespace Logistica
         public int Capacity => _capacity;
         public int UnusedCapacity => _unusedCapacity;
         public int UsedCapacity => _capacity - _remainingCapacity;
+        public int TotalValue => _totalValue;
 
         // agora é usado pra debug, talvez não tenha uso mais tarde
         public override string ToString()
