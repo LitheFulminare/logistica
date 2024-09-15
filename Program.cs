@@ -158,7 +158,7 @@ void CheckAvailableUnits()
 
     if (hasEnoughCapacity)
     {
-        SendToUnit();
+        SendToUnit(i);
     }
 
     else
@@ -173,9 +173,9 @@ void CheckAvailableUnits()
 }
 
 // chamado por CheckAvailableUnits() se a unidade tiver capacidade suficiente pra descarregar
-void SendToUnit()
+void SendToUnit(int unitIndex)
 {
-    Console.WriteLine($"\nTruck of plate {trucks.First().Plate} will be sent to unit of code {availableUnits[0].Code}");
+    Console.WriteLine($"\nTruck of plate {trucks.First().Plate} will be sent to unit of code {availableUnits[unitIndex].Code}");
 }
 
 // manda o primeiro caminhao para o final da fila
