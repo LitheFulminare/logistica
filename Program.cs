@@ -8,9 +8,12 @@ string caminhoesPath = "data/caminhoes.txt"; // plate, capacity
 string produtosPath = "data/produtos.txt"; // value, weight
 string unidadesPath = "data/unidades.txt"; // code, distance, capacity
 
+// listas geradas a partir dos arquivos
 List<Truck> trucks = new List<Truck>(); // lista de caminhoes -> mover o caminhão para o final para o final
 Queue<Product> products = new Queue<Product>(); // fila de produtos -> para poder remover o produto da fila
 List<Unit> units = new List<Unit>(); // lista de unidades -> não vai ser necessário mexer na ordem delas ou retirar unidades da lista
+
+// outras listas
 List<Unit> availableUnits = new List<Unit>();
 
 // lê os dados dos caminhões
