@@ -255,7 +255,7 @@ void checkTotalWeight(Unit unit)
 }
 
 Console.WriteLine($"\n1 - Placa do caminhão que fez a carga de maior valor: {mostValuableTruck.Plate}");
-Console.WriteLine($"2 - Unidade que recebeu maior qtd em kgs: {heaviestUnit.Code}");
+Console.WriteLine($"2 - Unidade que recebeu maior qtd em kg: {heaviestUnit.Code}");
 Console.WriteLine($"3 - Quilometros percorridos de ida e volta: {travelledDistance}");
 Console.WriteLine($"4 - Quilos de capacidade não utilizados: {totalUnusedCapacity}");
 
