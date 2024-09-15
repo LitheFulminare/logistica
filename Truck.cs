@@ -18,7 +18,6 @@ namespace Logistica
 
         private int _remainingCapacity = 0;
         private int _unusedCapacity = 0;
-        private int _productCount = 0; // protocolo 4 exige um máximo de 50 produtos no caminhão
         private int _profit = 0; // reseta pra 0 depois de descarregar
 
         public Truck(string plate, int capacity)
@@ -44,15 +43,15 @@ namespace Logistica
                 _remainingCapacity -= productWeight;
                 loadedProducts.Add(product);
 
-                Console.WriteLine("Product was successfully added");
-                Console.WriteLine($"Remaining capacity: {_remainingCapacity}");
+                //Console.WriteLine("Product was successfully added");
+                //Console.WriteLine($"Remaining capacity: {_remainingCapacity}");
                 return true;
             }
             else // retorna false para o Program saber que não tem mais espaço
             {
                 _unusedCapacity += _remainingCapacity; // vai guardando quantos kgs ficaram livres depois de cada viagem
-                Console.WriteLine("Product wasn't added");
-                Console.WriteLine($"Remaining capacity: {_remainingCapacity}");
+                //Console.WriteLine("Product wasn't added");
+                //Console.WriteLine($"Remaining capacity: {_remainingCapacity}");
                 return false;               
             }
         }

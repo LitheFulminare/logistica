@@ -19,6 +19,7 @@ List<Unit> availableUnits = new List<Unit>();
 
 // dados medidos para responder as perguntas de 1 a 4
 int travelledDistance = 0;
+Truck mostValuableTruck = null; // caminhão que fez a carga de maior valor (será usado a placa dele depois)
 
 // lê os dados dos caminhões
 using (StreamReader reader = new StreamReader(caminhoesPath))
@@ -101,9 +102,10 @@ using (StreamReader reader = new StreamReader(unidadesPath))
     availableUnits = units; // sets all units as available
 }
 
+
 bool truckLoaded = false; // debug -> provavelmente não vai ser usado assim no cod. final
 
-//while (remainingProducts.Count() > 0)
+//if (remainingProducts.Count() > 0)
 //{
 //    Load();
 //}
@@ -123,7 +125,7 @@ void Load()
         remainingProducts.Dequeue();
     }
     // se não tiver espaço ele é mandado para a unidade
-    else
+    else // protocolo 2 vai mudar as coisas aqui
     {
         Console.WriteLine("\nTruck fully loaded");
         Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
@@ -138,12 +140,12 @@ void Load()
 void CheckAvailableUnits()
 {
     bool hasEnoughCapacity = false;
-    int i = 0; // usado no loop foreach
+    int i = 0; // usado no loop foreach e tb depois quando for chamar 'SendToUnit(i)'
 
     // checa as capacidades das unidades para ver o que é suficiente
     foreach (var unit in availableUnits)
     {
-        Console.WriteLine($"\nUnit capacity: {availableUnits[i].Capacity}");
+        Console.WriteLine($"Unit capacity: {availableUnits[i].Capacity}");
 
         if (trucks.First().UsedCapacity <= availableUnits[i].Capacity)
         {
@@ -166,16 +168,26 @@ void CheckAvailableUnits()
         Console.WriteLine("Couldn't find an available unit");
 
         // reseta a lista de unidades disponíveis e roda a função CheckAvailableUnits() mais uma vez
-        availableUnits.Clear();
-        availableUnits = units;
-        CheckAvailableUnits();
+
+        //availableUnits.Clear();
+        //availableUnits = units;
+        //CheckAvailableUnits();
     }
 }
 
 // chamado por CheckAvailableUnits() se a unidade tiver capacidade suficiente pra descarregar
 void SendToUnit(int unitIndex)
 {
-    Console.WriteLine($"\nTruck of plate {trucks.First().Plate} will be sent to unit of code {availableUnits[unitIndex].Code}");
+    travelledDistance += availableUnits[unitIndex].Distance * 2; // x2 porque deve contar distancia de ida e volta
+    Console.WriteLine($"Truck of plate {trucks.First().Plate} will be sent to unit of code {availableUnits[unitIndex].Code}");
+    availableUnits.RemoveAt(unitIndex);
+    SendTruckToLast();
+
+    if (remainingProducts.Count > 0)
+    {
+        Console.WriteLine($"There still are {remainingProducts.Count()} products left");
+        truckLoaded = false;
+    }
 }
 
 // manda o primeiro caminhao para o final da fila
