@@ -129,35 +129,53 @@ void Load()
         Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
         Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
         truckLoaded = true;
-        SendToUnit();
+        CheckAvailableUnits();
     }
 }
 
 // chamada por Load() depois do caminhão ficar cheio
-// manda esse caminhão para a unidade correta
-void SendToUnit()
+// procura por unidades disponíveis
+void CheckAvailableUnits()
 {
     bool hasEnoughCapacity = false;
+    int i = 0; // usado no loop foreach
 
+    // checa as capacidades das unidades para ver o que é suficiente
     foreach (var unit in availableUnits)
     {
-        Console.WriteLine($"\nUnit capacity: {availableUnits[0].Capacity}");
+        Console.WriteLine($"\nUnit capacity: {availableUnits[i].Capacity}");
 
-        if (trucks.First().UsedCapacity <= availableUnits[0].Capacity)
+        if (trucks.First().UsedCapacity <= availableUnits[i].Capacity)
         {
             hasEnoughCapacity = true;
             Console.WriteLine($"Unit has enough capacity");
             break;
         }
-        else
-        {
-            Console.WriteLine($"Unit doesn't have enough capacity");
-        }
+
+        i++;
+        Console.WriteLine($"Unit doesn't have enough capacity");
     }
+
     if (hasEnoughCapacity)
     {
-        Console.WriteLine($"\nTruck of plate {trucks.First().Plate} will be sent to unit of code {availableUnits[0].Code}");
+        SendToUnit();
     }
+
+    else
+    {
+        Console.WriteLine("Couldn't find an available unit");
+
+        // reseta a lista de unidades disponíveis e roda a função CheckAvailableUnits() mais uma vez
+        availableUnits.Clear();
+        availableUnits = units;
+        CheckAvailableUnits();
+    }
+}
+
+// chamado por CheckAvailableUnits() se a unidade tiver capacidade suficiente pra descarregar
+void SendToUnit()
+{
+    Console.WriteLine($"\nTruck of plate {trucks.First().Plate} will be sent to unit of code {availableUnits[0].Code}");
 }
 
 // manda o primeiro caminhao para o final da fila
