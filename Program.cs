@@ -112,7 +112,15 @@ bool truckLoaded = false; // debug -> provavelmente não vai ser usado assim no 
 
 while (!truckLoaded) // debug -> provavelmente não vai ser usado assim no cod. final
 {
-    Load();
+    if (remainingProducts.Count() == 0)
+    {
+        truckLoaded = true; // faz o while parar
+        Console.WriteLine("\nNo products left");
+    }
+    else
+    {
+        Load();
+    }
 }
 
 // função usada para carregar os produtos nos caminhões
@@ -154,8 +162,8 @@ void CheckAvailableUnits()
             break;
         }
 
-        i++;
-        Console.WriteLine($"Unit doesn't have enough capacity");
+        Console.WriteLine($"Unit {availableUnits[i].Code} doesn't have enough capacity");
+        i++;        
     }
 
     if (hasEnoughCapacity)
@@ -166,6 +174,7 @@ void CheckAvailableUnits()
     else
     {
         Console.WriteLine("Couldn't find an available unit");
+        Console.WriteLine($"Available units left: {availableUnits.Count()}"); 
 
         // reseta a lista de unidades disponíveis e roda a função CheckAvailableUnits() mais uma vez
 
@@ -177,16 +186,21 @@ void CheckAvailableUnits()
 
 // chamado por CheckAvailableUnits() se a unidade tiver capacidade suficiente pra descarregar
 void SendToUnit(int unitIndex)
-{
-    travelledDistance += availableUnits[unitIndex].Distance * 2; // x2 porque deve contar distancia de ida e volta
+{  
     Console.WriteLine($"Truck of plate {trucks.First().Plate} will be sent to unit of code {availableUnits[unitIndex].Code}");
+
+    travelledDistance += availableUnits[unitIndex].Distance * 2; // x2 porque deve contar distancia de ida e volta
+
+    Console.WriteLine($"Travelled distance: {travelledDistance}");
+
     availableUnits.RemoveAt(unitIndex);
     SendTruckToLast();
 
     if (remainingProducts.Count > 0)
     {
         Console.WriteLine($"There still are {remainingProducts.Count()} products left");
-        truckLoaded = false;
+        // isso vai voltar a fazer o while lá de cima voltar a loopar e vai repetir todo esse processo até ficar sem productos
+        truckLoaded = false; 
     }
 }
 
