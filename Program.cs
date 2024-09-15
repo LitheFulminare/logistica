@@ -34,7 +34,6 @@ using (StreamReader reader = new StreamReader(caminhoesPath))
         if (capacityStr != null) { capacity = int.Parse(capacityStr); }
         Truck truck = new Truck(plate, capacity);
         trucks.Add(truck);
-        
     }
 }
 
@@ -94,6 +93,8 @@ using (StreamReader reader = new StreamReader(unidadesPath))
     // this is called when the reades has finished reading the file
     availableUnits = units; // sets all units as available
 }
+
+
 
 // CAMINHÕES
 
