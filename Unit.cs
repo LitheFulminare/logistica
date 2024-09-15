@@ -20,9 +20,10 @@ namespace Logistica
             this._capacity = capacity;
         }
 
-        public string GetCode() { return _code; }
-        public int GetDistance() { return _distance; }
-        public int GetCapacity() { return _capacity; }
+        // propriedades
+        public string Code => _code;
+        public int Distance => _distance;
+        public int Capacity => _capacity;
 
         // agora é usado pra debug, talvez não tenha uso mais tarde
         public override string ToString()

@@ -90,6 +90,8 @@ using (StreamReader reader = new StreamReader(unidadesPath))
 
 // CAMINHÕES
 
+
+
 Console.WriteLine($"First truck on the list: {trucks[0]}");
 Console.WriteLine($"Truck count: {trucks.Count}");
 //Console.WriteLine($"Last truck on the list: {trucks[trucks.Count - 1]}");
@@ -111,8 +113,8 @@ Console.WriteLine($"Truck count: {trucks.Count}");
 
 // PRODUTOS
 
-//Console.WriteLine($"First product in the queue: {products.First()}");
-//Console.WriteLine($"Product count: {products.Count}");
+Console.WriteLine($"First product in the queue: {products.First()}");
+Console.WriteLine($"Product count: {products.Count}");
 //products.Dequeue();
 //Console.WriteLine($"Fist product after dequeue: {products.First()}");
 //Console.WriteLine($"Product count: {products.Count}");

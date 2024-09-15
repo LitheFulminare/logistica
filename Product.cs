@@ -18,8 +18,9 @@ namespace Logistica
             this._value = value;
         }
 
-        public int GetWeight() { return _weight; }
-        public int GetValue() { return _value; }
+        // propriedades
+        public int Weight => _weight;
+        public int Value => _value;
 
 
         // agora é usado pra debug, talvez não tenha uso mais tarde

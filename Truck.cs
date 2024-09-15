@@ -12,14 +12,21 @@ namespace Logistica
         private string _plate;
         private int _capacity;
 
+        // outros dados
+        private int _usedCapacity = 0;
+        private int _unusedCapacity = 0;
+        private int _productCount = 0; // protocolo 4 exige um máximo de 50 produtos no caminhão
+        private int _profit = 0; // reseta pra 0 depois de descarregar
+
         public Truck(string plate, int capacity)
         {
             this._plate = plate;
             this._capacity = capacity;
         }
 
-        public string GetPlate() { return _plate; }
-        public int GetCapacity() { return _capacity; }
+        // propriedades
+        public string Plate => _plate;
+        public int Capacity => _capacity;
 
         // agora é usado pra debug, talvez não tenha uso mais tarde
         public override string ToString()
