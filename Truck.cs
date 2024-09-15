@@ -52,7 +52,7 @@ namespace Logistica
             {
                 _unusedCapacity += _remainingCapacity; // vai guardando quantos kgs ficaram livres depois de cada viagem
                 Console.WriteLine("Product wasn't added");
-                Console.WriteLine($"Unused capacity: {_unusedCapacity}");
+                Console.WriteLine($"Remaining capacity: {_remainingCapacity}");
                 return false;               
             }
         }
@@ -61,6 +61,7 @@ namespace Logistica
         public string Plate => _plate;
         public int Capacity => _capacity;
         public int UnusedCapacity => _unusedCapacity;
+        public int UsedCapacity => _capacity - _remainingCapacity;
 
         // agora é usado pra debug, talvez não tenha uso mais tarde
         public override string ToString()

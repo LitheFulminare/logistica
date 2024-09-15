@@ -125,7 +125,9 @@ void Load()
     // se não tiver espaço ele é mandado para a unidade
     else
     {
-        Console.WriteLine("Truck fully loaded");
+        Console.WriteLine("\nTruck fully loaded");
+        Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
+        Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
         truckLoaded = true;
         SendToUnit();
     }
