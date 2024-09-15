@@ -24,7 +24,7 @@ using (StreamReader reader = new StreamReader(caminhoesPath))
         // lê a proxima linha, q na teoria deve ser a capacidade do caminhao
         string? capacityStr = reader.ReadLine();
 
-        // transforma a string capacidade num 'int'
+        // transforma a string 'capacidadeStr' num 'int'
         // cria nova intancia do obj 'Truck' usando os dados q acabou de ler e adciona a lista
         int capacity = 0;
         if (capacityStr != null) { capacity = int.Parse(capacityStr); }
@@ -49,7 +49,7 @@ using (StreamReader reader = new StreamReader(produtosPath))
         // lê a proxima linha, o peso do produto
         string? valueStr = reader.ReadLine();
 
-        // tenta transformar a string weight num 'int'
+        // tenta transformar a string 'weightStr' num 'int'
         int value = 0;
         if (valueStr != null) { value = int.Parse(valueStr); }
 
@@ -59,10 +59,40 @@ using (StreamReader reader = new StreamReader(produtosPath))
     }
 }
 
+// lê os dados das unidades
+using (StreamReader reader = new StreamReader(unidadesPath))
+{
+    string? code;
+
+    // lê a linha que contém o código da unidade
+    while ((code = reader.ReadLine()) != null)
+    {
+
+        // lê a proxima linha, a distância
+        string? distanceStr = reader.ReadLine();
+
+        // tenta transformar a string 'distance' num 'int'
+        int distance = 0;
+        if (distanceStr != null) { distance = int.Parse(distanceStr); }
+
+        // lê a próxima linha, a capacidade de descarregamento
+        string? capacityStr = reader.ReadLine();
+
+        // tenta transformar a string 'capacityStr' num 'int'
+        int capacity = 0;
+        if (capacityStr != null) { capacity = int.Parse(capacityStr); }
+
+        // cria nova intancia do obj 'Product' usando os dados q acabou de ler e adciona a lista
+        //Product product = new Product(weight, value);
+        //products.Enqueue(product);
+    }
+}
+
 // CAMINHÕES
 
-//Console.WriteLine($"First truck on the list: {trucks[0]}");
-//Console.WriteLine($"Last truck on the list: {trucks[trucks.Count-1]}");
+Console.WriteLine($"First truck on the list: {trucks[0]}");
+Console.WriteLine($"Truck count: {trucks.Count}");
+//Console.WriteLine($"Last truck on the list: {trucks[trucks.Count - 1]}");
 
 //// joga o primeiro caminhao para o final
 //Truck removedTruck = trucks[0];
@@ -81,16 +111,16 @@ using (StreamReader reader = new StreamReader(produtosPath))
 
 // PRODUTOS
 
-//Console.WriteLine($"First product in the queue: {products.First()}");
-//Console.WriteLine($"Product count: {products.Count}");
+Console.WriteLine($"First product in the queue: {products.First()}");
+Console.WriteLine($"Product count: {products.Count}");
 //products.Dequeue();
 //Console.WriteLine($"Fist product after dequeue: {products.First()}");
 //Console.WriteLine($"Product count: {products.Count}");
 
-Console.WriteLine("\n--- Lista de Produtos ---");
-foreach (var product in products)
-{
-    Console.WriteLine(product);
-}
+//Console.WriteLine("\n--- Lista de Produtos ---");
+//foreach (var product in products)
+//{
+//    Console.WriteLine(product);
+//}
 
 // UNIDADES
