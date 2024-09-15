@@ -17,6 +17,9 @@ List<Unit> units = new List<Unit>(); // lista de unidades -> não vai ser necess
 Queue<Product> remainingProducts = new Queue<Product>();
 List<Unit> availableUnits = new List<Unit>();
 
+// dados medidos para responder as perguntas de 1 a 4
+int travelledDistance = 0;
+
 // lê os dados dos caminhões
 using (StreamReader reader = new StreamReader(caminhoesPath))
 {
@@ -98,19 +101,56 @@ using (StreamReader reader = new StreamReader(unidadesPath))
     availableUnits = units; // sets all units as available
 }
 
-//while (remainingProducts != null)
+bool truckLoaded = false; // debug -> provavelmente não vai ser usado assim no cod. final
+
+//while (remainingProducts.Count() > 0)
 //{
 //    Load();
 //}
 
-Load();
-
-void Load()
+while (!truckLoaded) // debug -> provavelmente não vai ser usado assim no cod. final
 {
-    //Console.WriteLine($"{remainingProducts.First()}");
-    trucks.First().Load(remainingProducts.First());
-    remainingProducts.Dequeue();
+    Load();
 }
+
+// função usada para carregar os produtos nos caminhões
+// depois chama SendToUnit(), que manda esses caminhões para as unidades
+void Load() 
+{
+    // se o caminhão tiver espaço, ele carrega o item
+    if (trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight))
+    {       
+        remainingProducts.Dequeue();
+    }
+    // se não tiver espaço ele é mandado para a unidade
+    else
+    {
+        Console.WriteLine("Truck fully loaded");
+        truckLoaded = true;
+        SendToUnit();
+    }
+}
+
+// chamada por Load() depois do caminhão ficar cheio
+// manda esse caminhão para a unidade correta
+void SendToUnit()
+{
+    //trucks.First();
+}
+
+// manda o primeiro caminhao para o final da fila
+void SendTruckToLast()
+{
+    Truck removedtruck = trucks[0];
+    trucks.RemoveAt(0);
+    trucks.Add(removedtruck);
+}
+
+
+
+// ---------------------------------------------------
+// --------------------- DEBUG -----------------------
+// ---------------------------------------------------
 
 // CAMINHÕES
 
@@ -133,10 +173,11 @@ void Load()
 //}
 
 
+
 // PRODUTOS
 
-Console.WriteLine($"First product in the queue: {products.First()}");
-Console.WriteLine($"Product count: {products.Count}");
+//Console.WriteLine($"First product in the queue: {products.First()}");
+//Console.WriteLine($"Product count: {products.Count}");
 //products.Dequeue();
 //Console.WriteLine($"Fist product after dequeue: {products.First()}");
 //Console.WriteLine($"Product count: {products.Count}");
@@ -146,6 +187,8 @@ Console.WriteLine($"Product count: {products.Count}");
 //{
 //    Console.WriteLine(product);
 //}
+
+
 
 // UNIDADES
 //units.RemoveAt(0);
