@@ -14,6 +14,7 @@ Queue<Product> products = new Queue<Product>(); // fila de produtos -> para pode
 List<Unit> units = new List<Unit>(); // lista de unidades -> não vai ser necessário mexer na ordem delas ou retirar unidades da lista
 
 // outras listas
+Queue<Product> remainingProducts = new Queue<Product>();
 List<Unit> availableUnits = new List<Unit>();
 
 // lê os dados dos caminhões
@@ -60,6 +61,9 @@ using (StreamReader reader = new StreamReader(produtosPath))
         Product product = new Product(weight, value);
         products.Enqueue(product);
     }
+
+    // this is called when the reades has finished reading the file
+    remainingProducts = products;
 }
 
 // lê os dados das unidades
@@ -94,14 +98,24 @@ using (StreamReader reader = new StreamReader(unidadesPath))
     availableUnits = units; // sets all units as available
 }
 
+//while (remainingProducts != null)
+//{
+//    Load();
+//}
 
+Load();
+
+void Load()
+{
+    //Console.WriteLine($"{remainingProducts.First()}");
+    trucks.First().Load(remainingProducts.First());
+    remainingProducts.Dequeue();
+}
 
 // CAMINHÕES
 
-
-
-Console.WriteLine($"First truck on the list: {trucks[0]}");
-Console.WriteLine($"Truck count: {trucks.Count}");
+//Console.WriteLine($"First truck on the list: {trucks[0]}");
+//Console.WriteLine($"Truck count: {trucks.Count}");
 //Console.WriteLine($"Last truck on the list: {trucks[trucks.Count - 1]}");
 
 //// joga o primeiro caminhao para o final

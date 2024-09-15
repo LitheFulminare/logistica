@@ -14,7 +14,7 @@ namespace Logistica
 
         // outros dados
 
-        private List<Product> productsLoaded = new List<Product>(); // produtos que o caminhão está carregando no momento
+        private List<Product> loadedProducts = new List<Product>(); // produtos que o caminhão está carregando no momento
 
         private int _usedCapacity = 0;
         private int _unusedCapacity = 0;
@@ -35,6 +35,11 @@ namespace Logistica
         public override string ToString()
         {
             return $"Truck Plate: {_plate}, Capacity: {_capacity}";
+        }
+
+        public void Load(Product product)
+        {
+            loadedProducts.Add(product);
         }
     }
 }
