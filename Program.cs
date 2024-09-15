@@ -127,6 +127,8 @@ while (!truckLoaded) // debug -> provavelmente não vai ser usado assim no cod. 
 // depois chama SendToUnit(), que manda esses caminhões para as unidades
 void Load() 
 {
+    bool canHoldProduct = trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight);
+
     // se o caminhão tiver espaço, ele carrega o item
     if (trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight))
     {
@@ -194,12 +196,7 @@ void SendToUnit(int unitIndex)
     availableUnits.RemoveAt(unitIndex);
     SendTruckToLast();
 
-    if (remainingProducts.Count > 0)
-    {
-        Console.WriteLine($"There still are {remainingProducts.Count()} products left");
-        // isso vai voltar a fazer o while lá de cima voltar a loopar e vai repetir todo esse processo até ficar sem productos
-        truckLoaded = false; 
-    }
+    
 }
 
 // manda o primeiro caminhao para o final da fila
@@ -209,7 +206,12 @@ void SendTruckToLast()
     removedtruck.ResetCapacity();
     trucks.RemoveAt(0);
     trucks.Add(removedtruck);
-    truckLoaded = false;
+    if (remainingProducts.Count > 0)
+    {
+        Console.WriteLine($"There still are {remainingProducts.Count()} products left");
+        // isso vai voltar a fazer o while lá de cima voltar a loopar e vai repetir todo esse processo até ficar sem productos
+        truckLoaded = false;
+    }
 }
 
 
