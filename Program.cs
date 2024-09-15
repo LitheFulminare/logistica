@@ -99,7 +99,7 @@ using (StreamReader reader = new StreamReader(unidadesPath))
     }
 
     // this is called when the reades has finished reading the file
-    availableUnits = units; // sets all units as available
+    availableUnits.AddRange(units); // sets all units as available
 }
 
 
@@ -129,7 +129,8 @@ void Load()
 {
     // se o caminhão tiver espaço, ele carrega o item
     if (trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight))
-    {       
+    {
+        //Console.WriteLine("Dequeue was called");
         remainingProducts.Dequeue();
     }
     // se não tiver espaço ele é mandado para a unidade
@@ -138,7 +139,7 @@ void Load()
         Console.WriteLine("\nTruck fully loaded");
         Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
         Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
-        truckLoaded = true;
+        //truckLoaded = true;
         CheckAvailableUnits();
     }
 }
@@ -174,13 +175,10 @@ void CheckAvailableUnits()
     else
     {
         Console.WriteLine("Couldn't find an available unit");
-        Console.WriteLine($"Available units left: {availableUnits.Count()}"); 
-
+        Console.WriteLine($"Available units left: {availableUnits.Count()}");
         // reseta a lista de unidades disponíveis e roda a função CheckAvailableUnits() mais uma vez
-
-        //availableUnits.Clear();
-        //availableUnits = units;
-        //CheckAvailableUnits();
+        availableUnits.AddRange(units);
+        CheckAvailableUnits();
     }
 }
 
@@ -208,8 +206,10 @@ void SendToUnit(int unitIndex)
 void SendTruckToLast()
 {
     Truck removedtruck = trucks[0];
+    removedtruck.ResetCapacity();
     trucks.RemoveAt(0);
     trucks.Add(removedtruck);
+    truckLoaded = false;
 }
 
 
