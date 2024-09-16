@@ -180,13 +180,16 @@ void CheckAvailableUnits()
             Console.WriteLine($"Unit has enough capacity");
             break;
         }
-
         Console.WriteLine($"Unit {availableUnits[i].Code} doesn't have enough capacity");
         i++;        
     }
 
     if (hasEnoughCapacity)
     {
+        if (trucks.First().Capacity > averageTruckCapacity)
+        {
+            // checar a distancia da unidade com a media aqui
+        }
         SendToUnit(i);
     }
 
