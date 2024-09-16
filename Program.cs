@@ -28,6 +28,9 @@ int highestTotalWeight = 0; // usado pra definir o de cima
 
 int totalUnusedCapacity = 0; // guarda quanto de espaço não foi usado depois de cada viagem (apenas a ida é contabilizada, a volta é ignorada)
 
+float averageUnitDistance = 0; // média das distancias das unidades (protocolo 3)
+float averageTruckCapacity = 0; // média das capacidades dos caminhoes (protocolo 3)
+
 // lê os dados dos caminhões
 using (StreamReader reader = new StreamReader(caminhoesPath))
 {
@@ -110,14 +113,8 @@ using (StreamReader reader = new StreamReader(unidadesPath))
 }
 
 
-bool truckLoaded = false; // debug -> provavelmente não vai ser usado assim no cod. final
-
-//if (remainingProducts.Count() > 0)
-//{
-//    Load();
-//}
-
-while (!truckLoaded) // debug -> provavelmente não vai ser usado assim no cod. final
+bool truckLoaded = false;
+while (!truckLoaded) // responvel pelo loop de colocar os produtos nos caminhões
 {
     if (remainingProducts.Count() == 0)
     {
