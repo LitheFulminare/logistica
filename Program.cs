@@ -110,14 +110,8 @@ using (StreamReader reader = new StreamReader(unidadesPath))
 }
 
 
-bool truckLoaded = false; // debug -> provavelmente não vai ser usado assim no cod. final
-
-//if (remainingProducts.Count() > 0)
-//{
-//    Load();
-//}
-
-while (!truckLoaded) // debug -> provavelmente não vai ser usado assim no cod. final
+bool truckLoaded = false;
+while (!truckLoaded) // responvel pelo loop de colocar os produtos nos caminhões
 {
     if (remainingProducts.Count() == 0)
     {
@@ -145,7 +139,6 @@ void Load()
             Console.WriteLine("No products left");
             Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
             Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
-            //truckLoaded = true;
             CheckAvailableUnits();
         }
     }
@@ -155,7 +148,6 @@ void Load()
         Console.WriteLine("\nTruck fully loaded");
         Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
         Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
-        //truckLoaded = true;
         CheckAvailableUnits();
     }
 }
