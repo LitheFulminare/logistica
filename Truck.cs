@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Logistica
-{
+{ 
     internal class Truck
     {
         // dados extraidos do arquivo 'data/caminhoes.txt'

@@ -398,3 +398,4 @@ FodyWeavers.xsd
 *.sln.iml
 bin/Debug/net8.0/Logistica.dll
 bin/Debug/net8.0/Logistica.exe
+*.dll
