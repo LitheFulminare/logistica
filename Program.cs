@@ -7,11 +7,11 @@ string unidadesPath = "data/unidades.txt"; // code, distance, capacity
 
 // listas geradas a partir dos arquivos
 List<Truck> trucks = new List<Truck>(); // lista de caminhoes -> mover o caminhão para o final
-Queue<Product> products = new Queue<Product>(); // fila de produtos -> para poder remover o produto da fila
+List<Product> products = new List<Product>(); // fila de produtos -> para poder remover o produto da fila
 List<Unit> units = new List<Unit>(); // lista de unidades -> não vai ser necessário mexer na ordem delas ou retirar unidades da lista
 
 // outras listas
-Queue<Product> remainingProducts = new Queue<Product>();
+List<Product> remainingProducts = new List<Product>();
 List<Unit> availableUnits = new List<Unit>();
 
 // dados medidos para responder as perguntas de 1 a 4
@@ -70,11 +70,11 @@ using (StreamReader reader = new StreamReader(produtosPath))
 
         // cria nova intancia do obj 'Product' usando os dados q acabou de ler e adciona a lista
         Product product = new Product(weight, value);
-        products.Enqueue(product);
+        products.Add(product);
     }
 
     // this is called when the reades has finished reading the file
-    remainingProducts = products;
+    remainingProducts.AddRange(products);
 }
 
 // lê os dados das unidades
@@ -130,31 +130,43 @@ while (!truckLoaded) // responvel pelo loop de colocar os produtos nos caminhõe
 
 // função usada para carregar os produtos nos caminhões
 // depois chama SendToUnit(), que manda esses caminhões para as unidades
-void Load()
+void Load() // essa função muda um pouco no protocolo 2
 {
-    // se o caminhão tiver espaço, ele carrega o item
-    if (trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight))
+    bool productLoaded = false;
+    int productIndex = 0;
+
+    while (!productLoaded)
     {
-        //Console.WriteLine("Dequeue was called");
-        remainingProducts.Dequeue();
-        if (remainingProducts.Count() == 0)
+        //se o caminhão tiver espaço, ele carrega o item                   (esse segundo parametro é inútil
+        if (trucks.First().Load(remainingProducts.ElementAt(productIndex), remainingProducts.ElementAt(productIndex).Weight))
         {
-            Console.WriteLine("\nTruck loaded");
-            Console.WriteLine("No products left");
-            Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
-            Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
-            //truckLoaded = true;
-            CheckAvailableUnits();
+            remainingProducts.RemoveAt(productIndex);
+            if (remainingProducts.Count() == 0)
+            {
+                productLoaded = true; // faz o while parar de rodar
+                Console.WriteLine("\nTruck loaded");
+                Console.WriteLine("No products left");
+                Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
+                Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
+                CheckAvailableUnits();
+            }
         }
-    }
-    // se não tiver espaço ele é mandado para a unidade
-    else // protocolo 2 vai mudar as coisas aqui
-    {
-        Console.WriteLine("\nTruck fully loaded");
-        Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
-        Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
-        //truckLoaded = true;
-        CheckAvailableUnits();
+        // se não tiver espaço ele checa o proximo
+        else
+        {
+            if (productIndex < remainingProducts.Count() - 1) // se não for o último produto
+            {
+                productIndex++; // vai tentar pegar o próximo da lista quando loopar de volta
+            }
+            else // se for o ultimo
+            {
+                productLoaded = true; // faz o while parar de rodar
+                Console.WriteLine("\nTruck loaded");
+                Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
+                Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
+                CheckAvailableUnits();
+            }
+        }
     }
 }
 
