@@ -66,7 +66,7 @@ namespace Logistica
         // propriedades
         public string Plate => _plate;
         public int Capacity => _capacity;
-        public int UnusedCapacity => _totalUnusedCapacity; // acumula pelas viagens
+        public int UnusedCapacity => _totalUnusedCapacity; // acumula pelas viagens, acho q n vai ser usado
         public int UsedCapacity => _capacity - _remainingCapacity;
         public int RemainingCapacity => _remainingCapacity; // reseta depois de cada viagem
         public int TotalValue => _totalValue;
