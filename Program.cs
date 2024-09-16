@@ -192,7 +192,9 @@ void CheckAvailableUnits()
     {
         Console.WriteLine("Couldn't find an available unit");
         Console.WriteLine($"Available units left: {availableUnits.Count()}");
+
         // reseta a lista de unidades disponíveis e roda a função CheckAvailableUnits() mais uma vez
+        availableUnits.Clear(); // garante que a lista realmente vai estar vazia
         availableUnits.AddRange(units);
         CheckAvailableUnits();
     }
