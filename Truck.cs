@@ -46,7 +46,7 @@ namespace Logistica
         // chamado por Load()
         public bool Load(Product product, int productWeight)
         {
-            if (_remainingCapacity > product.Weight) 
+            if (_remainingCapacity > product.Weight)
             {
                 // adciona o produto a lista, contabiliza seu peso e valor
                 _remainingCapacity -= product.Weight;
@@ -58,16 +58,17 @@ namespace Logistica
             else // retorna false para o Program saber que não tem mais espaço
             {
                 _totalUnusedCapacity += _remainingCapacity; // vai guardando quantos kgs ficaram livres depois de cada viagem
-                return false;               
+                return false;
             }
-            
+
         }
 
         // propriedades
         public string Plate => _plate;
         public int Capacity => _capacity;
-        public int UnusedCapacity => _totalUnusedCapacity;
+        public int UnusedCapacity => _totalUnusedCapacity; // acumula pelas viagens, acho q n vai ser usado
         public int UsedCapacity => _capacity - _remainingCapacity;
+        public int RemainingCapacity => _remainingCapacity; // reseta depois de cada viagem
         public int TotalValue => _totalValue;
 
         // agora é usado pra debug, talvez não tenha uso mais tarde

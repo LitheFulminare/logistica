@@ -144,7 +144,7 @@ void Load()
             Console.WriteLine("\nTruck loaded");
             Console.WriteLine("No products left");
             Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
-            Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
+            Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
             //truckLoaded = true;
             CheckAvailableUnits();
         }
@@ -154,7 +154,7 @@ void Load()
     {
         Console.WriteLine("\nTruck fully loaded");
         Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
-        Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
+        Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
         //truckLoaded = true;
         CheckAvailableUnits();
     }
@@ -211,7 +211,7 @@ void SendToUnit(int unitIndex)
 
     checkTotalWeight(units[unitIndex]); // checa de essa mesma unidade é a que mais recebeu
 
-    totalUnusedCapacity += trucks.First().UnusedCapacity;
+    totalUnusedCapacity += trucks.First().RemainingCapacity;
 
     travelledDistance += availableUnits[unitIndex].Distance * 2; // x2 porque deve contar distancia de ida e volta
 
