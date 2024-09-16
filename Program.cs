@@ -1,7 +1,4 @@
 ﻿using Logistica;
-using System;
-using System.IO;
-using System.Reflection.PortableExecutable;
 
 // paths dos arquivos
 string caminhoesPath = "data/caminhoes.txt"; // plate, capacity
@@ -117,7 +114,6 @@ using (StreamReader reader = new StreamReader(unidadesPath))
 averageTruckCapacity = CalculateAverage.Capacity(trucks);
 averageUnitDistance = CalculateAverage.Distance(units);
 
-
 bool truckLoaded = false;
 while (!truckLoaded) // responvel pelo loop de colocar os produtos nos caminhões
 {
@@ -134,7 +130,7 @@ while (!truckLoaded) // responvel pelo loop de colocar os produtos nos caminhõe
 
 // função usada para carregar os produtos nos caminhões
 // depois chama SendToUnit(), que manda esses caminhões para as unidades
-void Load() 
+void Load()
 {
     // se o caminhão tiver espaço, ele carrega o item
     if (trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight))
@@ -164,7 +160,7 @@ void Load()
 
 // chamada por Load() depois do caminhão ficar cheio
 // procura por unidades disponíveis
-int index = 0;
+
 void CheckAvailableUnits()
 {
     bool hasEnoughCapacity = false;
@@ -176,35 +172,33 @@ void CheckAvailableUnits()
         Console.WriteLine($"i: {i}");
         Console.WriteLine($"Unit capacity: {availableUnits[i].Capacity}");
 
-        if (trucks.First().UsedCapacity <= availableUnits[i].Capacity)
+        if (trucks.First().UsedCapacity <= availableUnits[i].Capacity) // checar aqui as medias
         {
-            hasEnoughCapacity = true;
-            Console.WriteLine($"Unit has enough capacity");
-            break;
+            //  checa media de capacidade e de distancia
+            if (trucks.First().Capacity >= averageTruckCapacity && availableUnits[i].Distance >= averageUnitDistance)
+            {
+                Console.WriteLine($"Both are above average: {trucks.First().Capacity} - {availableUnits[i].Distance}");
+                hasEnoughCapacity = true;
+                break;
+            }
+            else if (trucks.First().Capacity < averageTruckCapacity && availableUnits[i].Distance < averageUnitDistance)
+            {
+                Console.WriteLine($"Both are below average: {trucks.First().Capacity} - {availableUnits[i].Distance}");
+                hasEnoughCapacity = true;
+                break;
+            }
+            else
+            {
+                Console.WriteLine($"Wrong values: {trucks.First().Capacity} - {availableUnits[i].Distance}");
+            }
         }
         Console.WriteLine($"Unit {availableUnits[i].Code} doesn't have enough capacity");
-        i++;        
+        i++;
     }
 
     if (hasEnoughCapacity)
     {
-        Console.WriteLine("LINE WAS READ");
-        //  checa media de capacidade e de distancia
-        if (trucks.First().Capacity >= averageTruckCapacity && availableUnits[i].Distance >= averageUnitDistance)
-        {
-            Console.WriteLine($"Both are above average: {trucks.First().Capacity} - {availableUnits[i].Distance}");
-            SendToUnit(i);
-        }
-        else if (trucks.First().Capacity < averageTruckCapacity && availableUnits[i].Distance < averageUnitDistance)
-        {
-            Console.WriteLine($"Both are below average: {trucks.First().Capacity} - {availableUnits[i].Distance}");
-            SendToUnit(i);
-        }
-        else
-        {
-            Console.WriteLine($"Wrong values: {trucks.First().Capacity} - {availableUnits[i].Distance}");
-            i++;
-        }
+        SendToUnit(i);
     }
 
     else
@@ -216,12 +210,14 @@ void CheckAvailableUnits()
         availableUnits.Clear(); // garante que a lista realmente vai estar vazia
         availableUnits.AddRange(units);
         CheckAvailableUnits();
+
     }
 }
 
 // chamado por CheckAvailableUnits() se a unidade tiver capacidade suficiente pra descarregar
 void SendToUnit(int unitIndex)
-{  
+{
+    Console.WriteLine($"Index value: {unitIndex}");
     Console.WriteLine($"Truck of plate {trucks.First().Plate} will be sent to unit of code {availableUnits[unitIndex].Code}");
 
     checkLoadValue(); // checa se esse descarregamento foi o mais caro
@@ -237,7 +233,7 @@ void SendToUnit(int unitIndex)
     Console.WriteLine($"Travelled distance: {travelledDistance}");
 
     availableUnits.RemoveAt(unitIndex);
-    SendTruckToLast(); 
+    SendTruckToLast();
 }
 
 // manda o primeiro caminhao para o final da fila
