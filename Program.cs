@@ -157,6 +157,10 @@ void Load()
         // se não tiver espaço ele checa o proximo
         else // protocolo 2 vai mudar as coisas aqui
         {
+            if (productIndex == remainingProducts.Count()) // se for o último produto
+            {
+
+            }
             Console.WriteLine("\nTruck fully loaded");
             Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
             Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
@@ -224,6 +228,7 @@ void CheckAvailableUnits()
         Console.WriteLine("Couldn't find an available unit");
         Console.WriteLine($"Available units left: {availableUnits.Count()}");
         // reseta a lista de unidades disponíveis e roda a função CheckAvailableUnits() mais uma vez
+        availableUnits.Clear();
         availableUnits.AddRange(units);
         CheckAvailableUnits();
     }
