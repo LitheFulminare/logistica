@@ -117,14 +117,14 @@ averageUnitDistance = CalculateAverage.Distance(units);
 bool isProductListEmpty = false;
 while (!isProductListEmpty) // responvel pelo loop de colocar os produtos nos caminhões
 {
-    if (remainingProducts.Count() == 0)
+    if (remainingProducts.Count() != 0)
     {
-        isProductListEmpty = true; // faz o while parar
-        Console.WriteLine("\nNo products left");
+        Load();     
     }
     else
     {
-        Load();
+        isProductListEmpty = true; // faz o while parar
+        Console.WriteLine("\nNo products left");
     }
 }
 
