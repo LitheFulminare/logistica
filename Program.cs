@@ -112,6 +112,11 @@ using (StreamReader reader = new StreamReader(unidadesPath))
     availableUnits.AddRange(units); // sets all units as available
 }
 
+// chama as funcoes responsaveis por caulcular a media de capacidade e distancia
+// esses 2 parametros sao usados no protocolo 3
+averageTruckCapacity = CalculateAverage.Capacity(trucks);
+averageUnitDistance = CalculateAverage.Distance(units);
+
 
 bool truckLoaded = false;
 while (!truckLoaded) // responvel pelo loop de colocar os produtos nos caminhões
@@ -257,3 +262,4 @@ Console.WriteLine($"\n1 - Placa do caminhão que fez a carga de maior valor: {mo
 Console.WriteLine($"2 - Unidade que recebeu maior qtd em kg: {heaviestUnit.Code}");
 Console.WriteLine($"3 - Quilometros percorridos de ida e volta: {travelledDistance}");
 Console.WriteLine($"4 - Quilos de capacidade não utilizados: {totalUnusedCapacity}");
+Console.WriteLine($"\n Média de capacidade: {averageTruckCapacity}");
