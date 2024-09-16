@@ -13,20 +13,14 @@ namespace Logistica
         public static float Capacity(List<Truck> trucks)
         {
             int totalCapacity = 0;
-            foreach (var truck in trucks)
-            {
-                totalCapacity += truck.Capacity;
-            }
+            foreach (var truck in trucks) { totalCapacity += truck.Capacity; }
             return totalCapacity / trucks.Count();
         }
 
         public static float Distance(List<Unit> units)
         {
             int totalDistance = 0;
-            foreach (var unit in units)
-            {
-                totalDistance += unit.Distance;
-            }
+            foreach (var unit in units) { totalDistance += unit.Distance; }
             return totalDistance / units.Count();
         }
     }
