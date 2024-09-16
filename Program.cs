@@ -110,7 +110,7 @@ using (StreamReader reader = new StreamReader(unidadesPath))
 }
 
 
-bool truckLoaded = false; // debug -> provavelmente não vai ser usado assim no cod. final
+bool truckLoaded = true; // debug -> provavelmente não vai ser usado assim no cod. final
 
 //if (remainingProducts.Count() > 0)
 //{
@@ -139,10 +139,33 @@ void Load()
 
     while (!productLoaded)
     {
-        productIndex++;
+        //se o caminhão tiver espaço, ele carrega o item
+        if (trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight))
+        {
+            //Console.WriteLine("Dequeue was called");
+            //remainingProducts.Dequeue();
+            if (remainingProducts.Count() == 0)
+            {
+                Console.WriteLine("\nTruck loaded");
+                Console.WriteLine("No products left");
+                Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
+                Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
+                //truckLoaded = true;
+                CheckAvailableUnits();
+            }
+        }
+        // se não tiver espaço ele checa o proximo
+        else // protocolo 2 vai mudar as coisas aqui
+        {
+            Console.WriteLine("\nTruck fully loaded");
+            Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
+            Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
+            //truckLoaded = true;
+            CheckAvailableUnits();
+        }
     }
 
-    // se o caminhão tiver espaço, ele carrega o item
+    //se o caminhão tiver espaço, ele carrega o item
     if (trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight))
     {
         //Console.WriteLine("Dequeue was called");
@@ -262,7 +285,57 @@ void checkTotalWeight(Unit unit)
     }
 }
 
-Console.WriteLine($"\n1 - Placa do caminhão que fez a carga de maior valor: {mostValuableTruck.Plate}");
-Console.WriteLine($"2 - Unidade que recebeu maior qtd em kg: {heaviestUnit.Code}");
-Console.WriteLine($"3 - Quilometros percorridos de ida e volta: {travelledDistance}");
-Console.WriteLine($"4 - Quilos de capacidade não utilizados: {totalUnusedCapacity}");
+//Console.WriteLine($"\n1 - Placa do caminhão que fez a carga de maior valor: {mostValuableTruck.Plate}");
+//Console.WriteLine($"2 - Unidade que recebeu maior qtd em kg: {heaviestUnit.Code}");
+//Console.WriteLine($"3 - Quilometros percorridos de ida e volta: {travelledDistance}");
+//Console.WriteLine($"4 - Quilos de capacidade não utilizados: {totalUnusedCapacity}");
+
+// ---------------------------------------------------
+// --------------------- DEBUG -----------------------
+// ---------------------------------------------------
+
+// CAMINHÕES
+
+//Console.WriteLine($"First truck on the list: {trucks[0]}");
+//Console.WriteLine($"Truck count: {trucks.Count}");
+//Console.WriteLine($"Last truck on the list: {trucks[trucks.Count - 1]}");
+
+//// joga o primeiro caminhao para o final
+//Truck removedTruck = trucks[0];
+//trucks.RemoveAt(0);
+//trucks.Add(removedTruck);
+
+//Console.WriteLine($"Removed truck: {removedTruck}");
+//Console.WriteLine($"Last truck on the list: {trucks[trucks.Count - 1]}");
+
+//Console.WriteLine("--- Lista de Caminhões ---");
+//foreach (var truck in trucks)
+//{
+//    Console.WriteLine(truck);
+//}
+
+
+
+// PRODUTOS
+
+//Console.WriteLine($"First product in the queue: {products.First()}");
+//Console.WriteLine($"Product count: {products.Count}");
+//products.Dequeue();
+//Console.WriteLine($"Fist product after dequeue: {products.First()}");
+//Console.WriteLine($"Product count: {products.Count}");
+
+//Console.WriteLine("\n--- Lista de Produtos ---");
+//foreach (var product in products)
+//{
+//    Console.WriteLine(product);
+//}
+
+
+
+// UNIDADES
+//units.RemoveAt(0);
+//Console.WriteLine("\n--- Lista de Unidades ---");
+//foreach (var unit in units)
+//{
+//    Console.WriteLine(unit);
+//}
