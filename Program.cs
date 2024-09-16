@@ -25,8 +25,8 @@ int highestTotalWeight = 0; // usado pra definir o de cima
 
 int totalUnusedCapacity = 0; // guarda quanto de espaço não foi usado depois de cada viagem (apenas a ida é contabilizada, a volta é ignorada)
 
-float averageUnitDistance = 0; // média das distancias das unidades (protocolo 3)
-float averageTruckCapacity = 0; // média das capacidades dos caminhoes (protocolo 3)
+float averageUnitDistance = 0f; // média das distancias das unidades (protocolo 3)
+float averageTruckCapacity = 0f; // média das capacidades dos caminhoes (protocolo 3)
 
 // lê os dados dos caminhões
 using (StreamReader reader = new StreamReader(caminhoesPath))

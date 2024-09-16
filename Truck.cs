@@ -18,7 +18,6 @@ namespace Logistica
 
         private int _remainingCapacity = 0;
         private int _totalUnusedCapacity = 0;
-        private int _temporaryUnusedCapacity = 0;
         private int _totalValue = 0; // reseta pra 0 depois de descarregar
 
         public Truck(string plate, int capacity)
@@ -44,6 +43,8 @@ namespace Logistica
         }
 
         // chamado por Load()
+        // se tiver espaço, adciona o produto a lista e retorna 'true' pro 'Program' saber q deu certo
+        // se não, retorna false
         public bool Load(Product product)
         {
             if (_remainingCapacity > product.Weight)
@@ -66,7 +67,6 @@ namespace Logistica
         // propriedades
         public string Plate => _plate;
         public int Capacity => _capacity;
-        public int UnusedCapacity => _totalUnusedCapacity; // acumula pelas viagens, acho q n vai ser usado
         public int UsedCapacity => _capacity - _remainingCapacity;
         public int RemainingCapacity => _remainingCapacity; // reseta depois de cada viagem
         public int TotalValue => _totalValue;
