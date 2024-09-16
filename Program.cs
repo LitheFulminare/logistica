@@ -110,7 +110,7 @@ using (StreamReader reader = new StreamReader(unidadesPath))
 }
 
 
-bool truckLoaded = true; // debug -> provavelmente não vai ser usado assim no cod. final
+bool truckLoaded = false; // debug -> provavelmente não vai ser usado assim no cod. final
 
 //if (remainingProducts.Count() > 0)
 //{
@@ -139,13 +139,15 @@ void Load()
 
     while (!productLoaded)
     {
-        //se o caminhão tiver espaço, ele carrega o item
-        if (trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight))
+        //se o caminhão tiver espaço, ele carrega o item                   (esse segundo parametro é inútil
+        if (trucks.First().Load(remainingProducts.ElementAt(productIndex), remainingProducts.ElementAt(productIndex).Weight))
         {
             //Console.WriteLine("Dequeue was called");
             //remainingProducts.Dequeue();
+            remainingProducts.RemoveAt(productIndex);
             if (remainingProducts.Count() == 0)
             {
+                productLoaded = true; // faz o while parar de rodar
                 Console.WriteLine("\nTruck loaded");
                 Console.WriteLine("No products left");
                 Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
@@ -157,42 +159,46 @@ void Load()
         // se não tiver espaço ele checa o proximo
         else // protocolo 2 vai mudar as coisas aqui
         {
-            if (productIndex == remainingProducts.Count()) // se for o último produto
+            if (productIndex == remainingProducts.Count()-1) // se for o último produto
             {
-
+                productLoaded = true; // faz o while parar de rodar
+                Console.WriteLine("\nTruck loaded");
+                Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
+                Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
+                //truckLoaded = true;
+                CheckAvailableUnits();
             }
-            Console.WriteLine("\nTruck fully loaded");
-            Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
-            Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
-            //truckLoaded = true;
-            CheckAvailableUnits();
+            else // se não for o último da lista
+            {
+                productIndex++; // vai tentar pegar o próximo da lista quando loopar de volta
+            }
         }
     }
 
     //se o caminhão tiver espaço, ele carrega o item
-    if (trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight))
-    {
-        //Console.WriteLine("Dequeue was called");
-        //remainingProducts.Dequeue();
-        if (remainingProducts.Count() == 0)
-        {
-            Console.WriteLine("\nTruck loaded");
-            Console.WriteLine("No products left");
-            Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
-            Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
-            //truckLoaded = true;
-            CheckAvailableUnits();
-        }
-    }
-    // se não tiver espaço ele é mandado para a unidade
-    else // protocolo 2 vai mudar as coisas aqui
-    {
-        Console.WriteLine("\nTruck fully loaded");
-        Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
-        Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
-        //truckLoaded = true;
-        CheckAvailableUnits();
-    }
+    //if (trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight))
+    //{
+    //    //Console.WriteLine("Dequeue was called");
+    //    //remainingProducts.Dequeue();
+    //    if (remainingProducts.Count() == 0)
+    //    {
+    //        Console.WriteLine("\nTruck loaded");
+    //        Console.WriteLine("No products left");
+    //        Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
+    //        Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
+    //        //truckLoaded = true;
+    //        CheckAvailableUnits();
+    //    }
+    //}
+    //// se não tiver espaço ele é mandado para a unidade
+    //else // protocolo 2 vai mudar as coisas aqui
+    //{
+    //    Console.WriteLine("\nTruck fully loaded");
+    //    Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
+    //    Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
+    //    //truckLoaded = true;
+    //    CheckAvailableUnits();
+    //}
 }
 
 // chamada por Load() depois do caminhão ficar cheio
