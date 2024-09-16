@@ -263,5 +263,5 @@ Console.WriteLine($"2 - Unidade que recebeu maior qtd em kg: {heaviestUnit.Code}
 Console.WriteLine($"3 - Quilometros percorridos de ida e volta: {travelledDistance}");
 Console.WriteLine($"4 - Quilos de capacidade não utilizados: {totalUnusedCapacity}");
 
-Console.WriteLine($"Média de capacidade: {averageTruckCapacity}");
+Console.WriteLine($"\nMédia de capacidade: {averageTruckCapacity}");
 Console.WriteLine($"Média de distância: {averageUnitDistance}");
