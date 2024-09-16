@@ -44,7 +44,7 @@ namespace Logistica
         }
 
         // chamado por Load()
-        public bool Load(Product product, int productWeight)
+        public bool Load(Product product)
         {
             if (_remainingCapacity > product.Weight)
             {

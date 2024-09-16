@@ -114,12 +114,12 @@ using (StreamReader reader = new StreamReader(unidadesPath))
 averageTruckCapacity = CalculateAverage.Capacity(trucks);
 averageUnitDistance = CalculateAverage.Distance(units);
 
-bool truckLoaded = false;
-while (!truckLoaded) // responvel pelo loop de colocar os produtos nos caminhões
+bool isProductListEmpty = false;
+while (!isProductListEmpty) // responvel pelo loop de colocar os produtos nos caminhões
 {
     if (remainingProducts.Count() == 0)
     {
-        truckLoaded = true; // faz o while parar
+        isProductListEmpty = true; // faz o while parar
         Console.WriteLine("\nNo products left");
     }
     else
@@ -137,18 +137,15 @@ void Load() // essa função muda um pouco no protocolo 2
 
     while (!productLoaded)
     {
-        //se o caminhão tiver espaço, ele carrega o item                   (esse segundo parametro é inútil
-        if (trucks.First().Load(remainingProducts.ElementAt(productIndex), remainingProducts.ElementAt(productIndex).Weight))
+        // se o caminhão tiver espaço, ele carrega o item
+        if (trucks.First().Load(remainingProducts.ElementAt(productIndex)))
         {
-            remainingProducts.RemoveAt(productIndex);
+            remainingProducts.RemoveAt(productIndex); // tira o produto da lista
+
             if (remainingProducts.Count() == 0)
             {
                 productLoaded = true; // faz o while parar de rodar
-                Console.WriteLine("\nTruck loaded");
                 Console.WriteLine("No products left");
-                Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
-                Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
-                CheckAvailableUnits();
             }
         }
         // se não tiver espaço ele checa o proximo
@@ -162,17 +159,21 @@ void Load() // essa função muda um pouco no protocolo 2
             {
                 productLoaded = true; // faz o while parar de rodar
                 Console.WriteLine("\nTruck loaded");
-                Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
-                Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
-                CheckAvailableUnits();
             }
         }
     }
+
+    // só é executado quando o while acabar
+    // printa algumas infos importantes
+    // chama a função que procura por unidades
+    Console.WriteLine("\nTruck loaded");
+    Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
+    Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
+    CheckAvailableUnits();
 }
 
 // chamada por Load() depois do caminhão ficar cheio
 // procura por unidades disponíveis
-
 void CheckAvailableUnits()
 {
     bool hasEnoughCapacity = false;
@@ -181,7 +182,6 @@ void CheckAvailableUnits()
     // checa as capacidades das unidades para ver o que é suficiente
     foreach (var unit in availableUnits)
     {
-        Console.WriteLine($"i: {i}");
         Console.WriteLine($"Unit capacity: {availableUnits[i].Capacity}");
 
         if (trucks.First().UsedCapacity <= availableUnits[i].Capacity) // checar aqui as medias
@@ -229,7 +229,6 @@ void CheckAvailableUnits()
 // chamado por CheckAvailableUnits() se a unidade tiver capacidade suficiente pra descarregar
 void SendToUnit(int unitIndex)
 {
-    Console.WriteLine($"Index value: {unitIndex}");
     Console.WriteLine($"Truck of plate {trucks.First().Plate} will be sent to unit of code {availableUnits[unitIndex].Code}");
 
     checkLoadValue(); // checa se esse descarregamento foi o mais caro
@@ -260,7 +259,7 @@ void SendTruckToLast()
     {
         Console.WriteLine($"There still are {remainingProducts.Count()} products left");
         // isso vai voltar a fazer o while lá de cima voltar a loopar e vai repetir todo esse processo até ficar sem productos
-        truckLoaded = false;
+        isProductListEmpty = false;
     }
 }
 
@@ -283,12 +282,7 @@ void checkTotalWeight(Unit unit)
     }
 }
 
-Console.WriteLine($"\nCapacidade média dos caminhões: {averageTruckCapacity}");
-Console.WriteLine($"Distância média das unidades: {averageUnitDistance}");
-
 Console.WriteLine($"\n1 - Placa do caminhão que fez a carga de maior valor: {mostValuableTruck.Plate}");
 Console.WriteLine($"2 - Unidade que recebeu maior qtd em kg: {heaviestUnit.Code}");
 Console.WriteLine($"3 - Quilometros percorridos de ida e volta: {travelledDistance}");
 Console.WriteLine($"4 - Quilos de capacidade não utilizados: {totalUnusedCapacity}");
-
-
