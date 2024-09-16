@@ -17,7 +17,8 @@ namespace Logistica
         private List<Product> loadedProducts = new List<Product>(); // produtos que o caminhão está carregando no momento
 
         private int _remainingCapacity = 0;
-        private int _unusedCapacity = 0;
+        private int _totalUnusedCapacity = 0;
+        private int _temporaryUnusedCapacity = 0;
         private int _totalValue = 0; // reseta pra 0 depois de descarregar
 
         public Truck(string plate, int capacity)
@@ -37,11 +38,15 @@ namespace Logistica
         {
             _totalValue = 0;
         }
+        public void ResedUnused()
+        {
+            _totalUnusedCapacity = 0;
+        }
 
         // chamado por Load()
         public bool Load(Product product, int productWeight)
         {
-            if (_remainingCapacity > product.Weight) 
+            if (_remainingCapacity > product.Weight)
             {
                 // adciona o produto a lista, contabiliza seu peso e valor
                 _remainingCapacity -= product.Weight;
@@ -52,16 +57,18 @@ namespace Logistica
             }
             else // retorna false para o Program saber que não tem mais espaço
             {
-                _unusedCapacity += _remainingCapacity; // vai guardando quantos kgs ficaram livres depois de cada viagem
-                return false;               
+                _totalUnusedCapacity += _remainingCapacity; // vai guardando quantos kgs ficaram livres depois de cada viagem
+                return false;
             }
+
         }
 
         // propriedades
         public string Plate => _plate;
         public int Capacity => _capacity;
-        public int UnusedCapacity => _unusedCapacity;
+        public int UnusedCapacity => _totalUnusedCapacity; // acumula pelas viagens
         public int UsedCapacity => _capacity - _remainingCapacity;
+        public int RemainingCapacity => _remainingCapacity; // reseta depois de cada viagem
         public int TotalValue => _totalValue;
 
         // agora é usado pra debug, talvez não tenha uso mais tarde

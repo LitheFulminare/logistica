@@ -151,26 +151,26 @@ void Load()
                 Console.WriteLine("\nTruck loaded");
                 Console.WriteLine("No products left");
                 Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
-                Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
+                Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
                 //truckLoaded = true;
                 CheckAvailableUnits();
             }
         }
         // se não tiver espaço ele checa o proximo
-        else // protocolo 2 vai mudar as coisas aqui
+        else
         {
-            if (productIndex == remainingProducts.Count()-1) // se for o último produto
+            if (productIndex < remainingProducts.Count()-1) // se não for o último produto
+            {
+                productIndex++; // vai tentar pegar o próximo da lista quando loopar de volta
+            }
+            else // se for o ultimo
             {
                 productLoaded = true; // faz o while parar de rodar
                 Console.WriteLine("\nTruck loaded");
                 Console.WriteLine($"Used capacity: {trucks.First().UsedCapacity}");
-                Console.WriteLine($"Remaining capacity: {trucks.First().UnusedCapacity}");
+                Console.WriteLine($"Remaining capacity: {trucks.First().RemainingCapacity}");
                 //truckLoaded = true;
                 CheckAvailableUnits();
-            }
-            else // se não for o último da lista
-            {
-                productIndex++; // vai tentar pegar o próximo da lista quando loopar de volta
             }
         }
     }
@@ -251,7 +251,7 @@ void SendToUnit(int unitIndex)
 
     checkTotalWeight(units[unitIndex]); // checa de essa mesma unidade é a que mais recebeu
 
-    totalUnusedCapacity += trucks.First().UnusedCapacity;
+    totalUnusedCapacity += trucks.First().RemainingCapacity;
 
     travelledDistance += availableUnits[unitIndex].Distance * 2; // x2 porque deve contar distancia de ida e volta
 
