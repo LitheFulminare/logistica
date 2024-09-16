@@ -164,6 +164,7 @@ void Load()
 
 // chamada por Load() depois do caminhão ficar cheio
 // procura por unidades disponíveis
+int index = 0;
 void CheckAvailableUnits()
 {
     bool hasEnoughCapacity = false;
@@ -172,6 +173,7 @@ void CheckAvailableUnits()
     // checa as capacidades das unidades para ver o que é suficiente
     foreach (var unit in availableUnits)
     {
+        Console.WriteLine($"i: {i}");
         Console.WriteLine($"Unit capacity: {availableUnits[i].Capacity}");
 
         if (trucks.First().UsedCapacity <= availableUnits[i].Capacity)
@@ -186,11 +188,23 @@ void CheckAvailableUnits()
 
     if (hasEnoughCapacity)
     {
-        if (trucks.First().Capacity > averageTruckCapacity)
+        Console.WriteLine("LINE WAS READ");
+        //  checa media de capacidade e de distancia
+        if (trucks.First().Capacity >= averageTruckCapacity && availableUnits[i].Distance >= averageUnitDistance)
         {
-            // checar a distancia da unidade com a media aqui
+            Console.WriteLine($"Both are above average: {trucks.First().Capacity} - {availableUnits[i].Distance}");
+            SendToUnit(i);
         }
-        SendToUnit(i);
+        else if (trucks.First().Capacity < averageTruckCapacity && availableUnits[i].Distance < averageUnitDistance)
+        {
+            Console.WriteLine($"Both are below average: {trucks.First().Capacity} - {availableUnits[i].Distance}");
+            SendToUnit(i);
+        }
+        else
+        {
+            Console.WriteLine($"Wrong values: {trucks.First().Capacity} - {availableUnits[i].Distance}");
+            i++;
+        }
     }
 
     else
@@ -266,5 +280,5 @@ Console.WriteLine($"2 - Unidade que recebeu maior qtd em kg: {heaviestUnit.Code}
 Console.WriteLine($"3 - Quilometros percorridos de ida e volta: {travelledDistance}");
 Console.WriteLine($"4 - Quilos de capacidade não utilizados: {totalUnusedCapacity}");
 
-Console.WriteLine($"\nMédia de capacidade: {averageTruckCapacity}");
-Console.WriteLine($"Média de distância: {averageUnitDistance}");
+Console.WriteLine($"\nCapacidade média dos caminhões: {averageTruckCapacity}");
+Console.WriteLine($"Distância média das unidades: {averageUnitDistance}");
