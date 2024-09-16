@@ -10,11 +10,11 @@ string unidadesPath = "data/unidades.txt"; // code, distance, capacity
 
 // listas geradas a partir dos arquivos
 List<Truck> trucks = new List<Truck>(); // lista de caminhoes -> mover o caminhão para o final
-Queue<Product> products = new Queue<Product>(); // fila de produtos -> para poder remover o produto da fila
+List<Product> products = new List<Product>(); // fila de produtos -> para poder remover o produto da fila
 List<Unit> units = new List<Unit>(); // lista de unidades -> não vai ser necessário mexer na ordem delas ou retirar unidades da lista
 
 // outras listas
-Queue<Product> remainingProducts = new Queue<Product>();
+List<Product> remainingProducts = new List<Product>();
 List<Unit> availableUnits = new List<Unit>();
 
 // dados medidos para responder as perguntas de 1 a 4
@@ -70,11 +70,11 @@ using (StreamReader reader = new StreamReader(produtosPath))
 
         // cria nova intancia do obj 'Product' usando os dados q acabou de ler e adciona a lista
         Product product = new Product(weight, value);
-        products.Enqueue(product);
+        products.Add(product);
     }
 
     // this is called when the reades has finished reading the file
-    remainingProducts = products;
+    remainingProducts.AddRange(products);
 }
 
 // lê os dados das unidades
@@ -134,11 +134,19 @@ while (!truckLoaded) // debug -> provavelmente não vai ser usado assim no cod. 
 // depois chama SendToUnit(), que manda esses caminhões para as unidades
 void Load() 
 {
+    bool productLoaded = false;
+    int productIndex = 0;
+
+    while (!productLoaded)
+    {
+        productIndex++;
+    }
+
     // se o caminhão tiver espaço, ele carrega o item
     if (trucks.First().Load(remainingProducts.First(), remainingProducts.First().Weight))
     {
         //Console.WriteLine("Dequeue was called");
-        remainingProducts.Dequeue();
+        //remainingProducts.Dequeue();
         if (remainingProducts.Count() == 0)
         {
             Console.WriteLine("\nTruck loaded");
