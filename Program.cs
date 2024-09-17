@@ -59,7 +59,7 @@ while (remainingProducts.Count() > 0)
         if (remainingProducts.Count > 0)
         {
             productPile.Add(remainingProducts.ElementAt(0));
-            Console.WriteLine($"Now adding product : {remainingProducts.ElementAt(0)}, index {i}");
+            //Console.WriteLine($"Now adding product : {remainingProducts.ElementAt(0)}, index {i}");
             remainingProducts.RemoveAt(0); 
         }
     }
@@ -67,9 +67,9 @@ while (remainingProducts.Count() > 0)
 }
 
 Console.WriteLine($"Product piles in storage: {piles.Count()}");
-Console.WriteLine(piles.ElementAt(0).ElementAt(0));
-Console.WriteLine(piles.ElementAt(0).ElementAt(1));
-Console.WriteLine(piles.ElementAt(1).ElementAt(0));
+//Console.WriteLine(piles.ElementAt(0).ElementAt(0));
+//Console.WriteLine(piles.ElementAt(0).ElementAt(1));
+//Console.WriteLine(piles.ElementAt(1).ElementAt(0));
 
 remainingProducts.Clear();
 remainingProducts.AddRange(products);
