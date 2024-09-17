@@ -101,5 +101,39 @@ namespace Logistica
             }
             return units;
         }
+
+        // tentei fazer um leitor genérico mas n consegui e tb n tenho tanto tempo livre assim
+        public static List<Type> ReadAndCreateObjects(string filePath, int dataCount, Type type)
+        {
+            List<Type> list = new List<Type>();
+
+            using (StreamReader reader = new StreamReader(filePath))
+            {
+                // array para guardar info
+                Object[] dataArray = new Object[dataCount];
+                string? dataStr;
+
+                while ((dataStr = reader.ReadLine()) != null)
+                {
+
+                    //bool isInt = int.TryParse(dataStr, out int parsedData);                 
+
+                    for (int i = 0; i < dataCount; i++)
+                    {
+                        if (int.TryParse(dataStr, out var parsedData)) { dataArray[i] = parsedData; }
+                        else { dataArray[i] = dataStr; }
+
+                        dataStr = reader.ReadLine();
+                        //bool isNextInt = int.TryParse(dataStr, out var data2);
+                    }
+
+                    foreach (object obj in dataArray)
+                    {
+
+                    }
+                }
+            }
+            return list;
+        }
     }
 }

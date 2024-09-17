@@ -34,6 +34,9 @@ trucks.AddRange(FileReader.GenerateTrucks(caminhoesPath));
 products.AddRange(FileReader.GenerateProducts(produtosPath));
 units.AddRange(FileReader.GenerateUnits(unidadesPath));
 
+// leito genérico de arquivos (não deu certo)
+//FileReader.ReadAndCreateObjects(produtosPath, 2, typeof(Product));
+
 // cria cópia das listas pra não precisar mexer nas originais
 // ex.: a lista de unidades precisa retornar ao seu "estado original"
 remainingProducts.AddRange(products);
