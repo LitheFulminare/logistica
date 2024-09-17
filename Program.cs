@@ -1,4 +1,5 @@
 ﻿using Logistica;
+using System.Collections.Generic;
 
 // paths dos arquivos
 string caminhoesPath = "data/caminhoes.txt"; // plate, capacity
@@ -28,86 +29,15 @@ int totalUnusedCapacity = 0; // guarda quanto de espaço não foi usado depois d
 float averageUnitDistance = 0f; // média das distancias das unidades (protocolo 3)
 float averageTruckCapacity = 0f; // média das capacidades dos caminhoes (protocolo 3)
 
-// lê os dados dos caminhões
-using (StreamReader reader = new StreamReader(caminhoesPath))
-{
-    string? plate;
+// lê dados dos arquivos de texto, cria objetos, adiciona da lista
+trucks.AddRange(FileReader.GenerateTrucks(caminhoesPath));
+products.AddRange(FileReader.GenerateProducts(produtosPath));
+units.AddRange(FileReader.GenerateUnits(unidadesPath));
 
-    // lê a linha que contém a placa do caminhão (eu espero)
-    while ((plate = reader.ReadLine()) != null)
-    {
-
-        // lê a proxima linha, q na teoria deve ser a capacidade do caminhao
-        string? capacityStr = reader.ReadLine();
-
-        // transforma a string 'capacidadeStr' num 'int'
-        // cria nova intancia do obj 'Truck' usando os dados q acabou de ler e adciona a lista
-        int capacity = 0;
-        if (capacityStr != null) { capacity = int.Parse(capacityStr); }
-        Truck truck = new Truck(plate, capacity);
-        trucks.Add(truck);
-    }
-}
-
-// lê os dados dos produtos
-using (StreamReader reader = new StreamReader(produtosPath))
-{
-    string? weightStr;
-
-    // lê a linha que contém o valor do produto
-    while ((weightStr = reader.ReadLine()) != null)
-    {
-
-        int weight = 0;
-        if (weightStr != null) { weight = int.Parse(weightStr); }
-
-        // lê a proxima linha, o peso do produto
-        string? valueStr = reader.ReadLine();
-
-        // tenta transformar a string 'weightStr' num 'int'
-        int value = 0;
-        if (valueStr != null) { value = int.Parse(valueStr); }
-
-        // cria nova intancia do obj 'Product' usando os dados q acabou de ler e adciona a lista
-        Product product = new Product(weight, value);
-        products.Add(product);
-    }
-
-    // this is called when the reades has finished reading the file
-    remainingProducts.AddRange(products);
-}
-
-// lê os dados das unidades
-using (StreamReader reader = new StreamReader(unidadesPath))
-{
-    string? code;
-
-    // lê a linha que contém o código da unidade
-    while ((code = reader.ReadLine()) != null)
-    {
-
-        // lê a proxima linha, a distância
-        string? distanceStr = reader.ReadLine();
-
-        // tenta transformar a string 'distance' num 'int'
-        int distance = 0;
-        if (distanceStr != null) { distance = int.Parse(distanceStr); }
-
-        // lê a próxima linha, a capacidade de descarregamento
-        string? capacityStr = reader.ReadLine();
-
-        // tenta transformar a string 'capacityStr' num 'int'
-        int capacity = 0;
-        if (capacityStr != null) { capacity = int.Parse(capacityStr); }
-
-        // cria nova intancia do obj 'Product' usando os dados q acabou de ler e adciona a lista
-        Unit unit = new Unit(code, distance, capacity);
-        units.Add(unit);
-    }
-
-    // this is called when the reades has finished reading the file
-    availableUnits.AddRange(units); // sets all units as available
-}
+// cria cópia das listas pra não precisar mexer nas originais
+// ex.: a lista de unidades precisa retornar ao seu "estado original"
+remainingProducts.AddRange(products);
+availableUnits.AddRange(units);
 
 // chama as funcoes responsaveis por caulcular a media de capacidade e distancia
 // esses 2 parametros sao usados no protocolo 3
