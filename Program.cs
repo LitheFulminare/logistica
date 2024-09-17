@@ -11,6 +11,14 @@ List<Truck> trucks = new List<Truck>(); // lista de caminhoes -> mover o caminh�
 List<Product> products = new List<Product>(); // fila de produtos -> para poder remover o produto da fila
 List<Unit> units = new List<Unit>(); // lista de unidades -> não vai ser necessário mexer na ordem delas ou retirar unidades da lista
 
+// protocolo 4 exige uma pilha de 50 produtos
+int productPileSize = 50; // tamanho da pilha
+List<Product> productPile = new List<Product>(); // lista que vai de fato representar essas pilhas 
+// faria sentido usar array já que sempre vai ter 50 elementos, mas isso não é verdade
+// a quantidade de produtos não é multiplo de 50, então a ultima pilha ia dar errado
+// e tb deu certo assim, nao quis mudar
+List<List<Product>> piles = new List<List<Product>>(); // lista que vai armazenar as pilhas
+
 // outras listas
 List<Product> remainingProducts = new List<Product>();
 List<Unit> availableUnits = new List<Unit>();
@@ -18,16 +26,17 @@ List<Unit> availableUnits = new List<Unit>();
 // dados medidos para responder as perguntas de 1 a 4
 int travelledDistance = 0;
 
-Truck mostValuableTruck = null; // caminhão que fez a carga de maior valor (será usado a placa dele depois)
+Truck? mostValuableTruck = null; // caminhão que fez a carga de maior valor (será usado a placa dele depois)
 int mostValuableLoad = 0; // usado pra definir o caminhão mais valioso (o de cima)
 
-Unit heaviestUnit = null; // unidade que recebeu maior tanto em kg no total
+Unit? heaviestUnit = null; // unidade que recebeu maior tanto em kg no total
 int highestTotalWeight = 0; // usado pra definir o de cima
 
 int totalUnusedCapacity = 0; // guarda quanto de espaço não foi usado depois de cada viagem (apenas a ida é contabilizada, a volta é ignorada)
 
-float averageUnitDistance = 0f; // média das distancias das unidades (protocolo 3)
-float averageTruckCapacity = 0f; // média das capacidades dos caminhoes (protocolo 3)
+// protocolo 3 pede mais alguns parametros para determinar uma unidade como adequada
+float averageUnitDistance = 0f; // média das distancias das unidades
+float averageTruckCapacity = 0f; // média das capacidades dos caminhoes
 
 // lê dados dos arquivos de texto, cria objetos, adiciona da lista
 trucks.AddRange(FileReader.GenerateTrucks(caminhoesPath));
@@ -41,6 +50,19 @@ units.AddRange(FileReader.GenerateUnits(unidadesPath));
 // ex.: a lista de unidades precisa retornar ao seu "estado original"
 remainingProducts.AddRange(products);
 availableUnits.AddRange(units);
+
+while (remainingProducts.Count > 0)
+{
+    for (int i = 0; i < productPileSize; i++)
+    {
+        if (i == 0) { productPile.Clear(); } // garante que a lista vai estar vazia se for a primeira vez fazendo a pilha
+        productPile[i] = remainingProducts.First();
+        remainingProducts.RemoveAt(0);
+    }
+    piles.Add(productPile);
+}
+Console.WriteLine(piles.Count);
+
 
 // chama as funcoes responsaveis por caulcular a media de capacidade e distancia
 // esses 2 parametros sao usados no protocolo 3
