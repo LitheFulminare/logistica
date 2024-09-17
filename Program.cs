@@ -12,9 +12,9 @@ List<Product> products = new List<Product>(); // fila de produtos -> para poder 
 List<Unit> units = new List<Unit>(); // lista de unidades -> não vai ser necessário mexer na ordem delas ou retirar unidades da lista
 
 // protocolo 4 exige uma pilha de 50 produtos
-int productPileSize = 50; // tamanho da pilha
-// faria sentido usar array já que sempre vai ter 50 elementos, mas isso não é verdade
-// a quantidade de produtos não é multiplo de 50, então a ultima pilha ia dar errado
+int productPileSize = 10; // tamanho da pilha
+// faria sentido usar array já que sempre vai ter 10 elementos, mas isso não é verdade
+// a quantidade de produtos não é multiplo de 10, então a ultima pilha ia dar errado
 // e tb deu certo assim, nao quis mudar
 List<List<Product>> piles = new List<List<Product>>(); // lista que vai armazenar as pilhas
 
@@ -50,6 +50,7 @@ units.AddRange(FileReader.GenerateUnits(unidadesPath));
 remainingProducts.AddRange(products);
 availableUnits.AddRange(units);
 
+// pega os produtos, coloca eles na pilha, depois guarda todas as pilhas juntas
 while (remainingProducts.Count() > 0)
 {
     List<Product> productPile = new List<Product>();
@@ -58,18 +59,16 @@ while (remainingProducts.Count() > 0)
     {  
         if (remainingProducts.Count > 0)
         {
+            // adciona o produto na pilha 'productPìle' e remove ele da lista
             productPile.Add(remainingProducts.ElementAt(0));
-            //Console.WriteLine($"Now adding product : {remainingProducts.ElementAt(0)}, index {i}");
             remainingProducts.RemoveAt(0); 
         }
     }
+    // depois que alcançar o limite predeterminado (ou acabar) ele vai par
     piles.Add(productPile);
 }
 
 Console.WriteLine($"Product piles in storage: {piles.Count()}");
-//Console.WriteLine(piles.ElementAt(0).ElementAt(0));
-//Console.WriteLine(piles.ElementAt(0).ElementAt(1));
-//Console.WriteLine(piles.ElementAt(1).ElementAt(0));
 
 remainingProducts.Clear();
 remainingProducts.AddRange(products);
@@ -80,74 +79,74 @@ remainingProducts.AddRange(products);
 averageTruckCapacity = CalculateAverage.Capacity(trucks);
 averageUnitDistance = CalculateAverage.Distance(units);
 
-bool isProductListEmpty = true; // deve ser false para o programa rodar
+bool isProductListEmpty = false; // deve ser false para o programa rodar
 while (!isProductListEmpty) // responvel pelo loop de colocar os produtos nos caminhões
 {
-    if (remainingProducts.Count() != 0)
+    if (piles.Count() != 0)
     {
         Load();     
     }
     else
     {
         isProductListEmpty = true; // faz o while parar
-        Console.WriteLine("\nNo products left");
+        Console.WriteLine("\nNo piles left");
     }
 }
-
-// esse 2 for vão calcular o peso total da pilha
-// piles guarda todas as pilhas, para acessar os produtos individuas vc deve acessar piles[i][j], onde 'i' é o index da pilha e 'j' é o index do produto
-
-// for para cada pilha
-for (int pileIndex = 0; pileIndex < piles.Count(); pileIndex++)
-{
-    int totalPileWeight = 0;
-
-    // for para cada produto dentro de cada pilha
-    for (int productIndex = 0; productIndex < piles.ElementAt(pileIndex).Count(); productIndex++)
-    {
-        totalPileWeight += piles[pileIndex][productIndex].Weight;
-    }
-    Console.WriteLine($"Pile {pileIndex} weight: {totalPileWeight}");
-    // agora piles[i][j] vai ser interpretado como um único produto para simplificar as coisas
-}
-
-
 
 // função usada para carregar os produtos nos caminhões
 // depois chama SendToUnit(), que manda esses caminhões para as unidades
 void Load() // essa função muda um pouco no protocolo 2
 {
     bool productLoaded = false;
-    int productIndex_old = 0;
 
     while (!productLoaded)
     {
-        
+        // esse 2 for vão calcular o peso total da pilha
+        // piles guarda todas as pilhas, para acessar os produtos individuas vc deve acessar piles[i][j], onde 'i' é o index da pilha e 'j' é o index do produto
 
-        // se o caminhão tiver espaço, ele carrega o item
-        if (trucks.First().Load(remainingProducts.ElementAt(productIndex_old)))
-        {
-            remainingProducts.RemoveAt(productIndex_old); // tira o produto da lista
+        // while que vai iterar por cada pilha
+        int pileIndex = 0;
+        while (pileIndex < piles.Count())
+        {            
+            int totalPileWeight = 0;
+            int totalPileValue = 0;
+            //int productIndex = 0
+            // for para cada produto dentro de cada pilha
+            for (int productIndex = 0; productIndex < piles.ElementAt(pileIndex).Count(); productIndex++)
+            {         
+                totalPileWeight += piles[pileIndex][productIndex].Weight;
+                totalPileValue += piles[pileIndex][productIndex].Value;
+            }
+            //Console.WriteLine($"Pile {pileIndex} -> weight: {totalPileWeight} - value: {totalPileValue}");
+            // agora piles[i][j] vai ser interpretado como um único produto para simplificar as coisas
 
-            if (remainingProducts.Count() == 0)
+            // se o caminhão tiver espaço, ele carrega o item
+            if (trucks.First().Load(totalPileWeight, totalPileValue))
             {
-                productLoaded = true; // faz o while parar de rodar
-                Console.WriteLine("No products left");
+                //remainingProducts.RemoveAt(productIndex_old); // tira o produto da lista
+                piles.RemoveAt(pileIndex); // tira a pila da lista
+
+                if (piles.Count() == 0)
+                {
+                    productLoaded = true;
+                    break;                    
+                }
             }
-        }
-        // se não tiver espaço ele checa o proximo
-        else
-        {
-            if (productIndex_old < remainingProducts.Count() - 1) // se não for o último produto
+            // se não tiver espaço ele checa o proximo
+            else
             {
-                productIndex_old++; // vai tentar pegar o próximo da lista quando loopar de volta
+                //Console.WriteLine("Truck full");
+                if (pileIndex < piles.Count() - 1) // se não for a última pilha
+                {
+                    pileIndex++; // vai tentar pegar o próximo da lista quando loopar de volta
+                }
+                else // se for o ultimo
+                {
+                    productLoaded = true; // faz o while parar de rodar
+                    break;
+                }
             }
-            else // se for o ultimo
-            {
-                productLoaded = true; // faz o while parar de rodar
-                Console.WriteLine("\nTruck loaded");
-            }
-        }
+        }      
     }
 
     // só é executado quando o while acabar
@@ -242,9 +241,9 @@ void SendTruckToLast()
     removedtruck.ResetValue();
     trucks.RemoveAt(0);
     trucks.Add(removedtruck);
-    if (remainingProducts.Count > 0)
+    if (piles.Count() > 0)
     {
-        Console.WriteLine($"There still are {remainingProducts.Count()} products left");
+        Console.WriteLine($"There still are {piles.Count()} piles left");
         // isso vai voltar a fazer o while lá de cima voltar a loopar e vai repetir todo esse processo até ficar sem productos
         isProductListEmpty = false;
     }

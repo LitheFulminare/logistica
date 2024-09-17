@@ -45,7 +45,7 @@ namespace Logistica
         // chamado por Load()
         // se tiver espaço, adciona o produto a lista e retorna 'true' pro 'Program' saber q deu certo
         // se não, retorna false
-        public bool Load(Product product)
+        public bool Load_old(Product product)
         {
             if (_remainingCapacity > product.Weight)
             {
@@ -63,6 +63,25 @@ namespace Logistica
             }
 
         }
+
+        public bool Load(int weight, int value)
+        {
+            if (_remainingCapacity > weight)
+            {
+                // contabiliza seu peso e valor
+                _remainingCapacity -= weight;
+                _totalValue += value;
+                //loadedProducts.Add(product);
+
+                return true;
+            }
+            else // retorna false para o Program saber que não tem mais espaço
+            {
+                _totalUnusedCapacity += _remainingCapacity; // vai guardando quantos kgs ficaram livres depois de cada viagem
+                return false;
+            }
+        }
+
 
         // propriedades
         public string Plate => _plate;
