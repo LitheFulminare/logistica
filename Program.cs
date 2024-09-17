@@ -94,19 +94,40 @@ while (!isProductListEmpty) // responvel pelo loop de colocar os produtos nos ca
     }
 }
 
+// esse 2 for vão calcular o peso total da pilha
+// piles guarda todas as pilhas, para acessar os produtos individuas vc deve acessar piles[i][j], onde 'i' é o index da pilha e 'j' é o index do produto
+
+// for para cada pilha
+for (int pileIndex = 0; pileIndex < piles.Count(); pileIndex++)
+{
+    int totalPileWeight = 0;
+
+    // for para cada produto dentro de cada pilha
+    for (int productIndex = 0; productIndex < piles.ElementAt(pileIndex).Count(); productIndex++)
+    {
+        totalPileWeight += piles[pileIndex][productIndex].Weight;
+    }
+    Console.WriteLine($"Pile {pileIndex} weight: {totalPileWeight}");
+    // agora piles[i][j] vai ser interpretado como um único produto para simplificar as coisas
+}
+
+
+
 // função usada para carregar os produtos nos caminhões
 // depois chama SendToUnit(), que manda esses caminhões para as unidades
 void Load() // essa função muda um pouco no protocolo 2
 {
     bool productLoaded = false;
-    int productIndex = 0;
+    int productIndex_old = 0;
 
     while (!productLoaded)
     {
+        
+
         // se o caminhão tiver espaço, ele carrega o item
-        if (trucks.First().Load(remainingProducts.ElementAt(productIndex)))
+        if (trucks.First().Load(remainingProducts.ElementAt(productIndex_old)))
         {
-            remainingProducts.RemoveAt(productIndex); // tira o produto da lista
+            remainingProducts.RemoveAt(productIndex_old); // tira o produto da lista
 
             if (remainingProducts.Count() == 0)
             {
@@ -117,9 +138,9 @@ void Load() // essa função muda um pouco no protocolo 2
         // se não tiver espaço ele checa o proximo
         else
         {
-            if (productIndex < remainingProducts.Count() - 1) // se não for o último produto
+            if (productIndex_old < remainingProducts.Count() - 1) // se não for o último produto
             {
-                productIndex++; // vai tentar pegar o próximo da lista quando loopar de volta
+                productIndex_old++; // vai tentar pegar o próximo da lista quando loopar de volta
             }
             else // se for o ultimo
             {
