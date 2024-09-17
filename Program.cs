@@ -208,25 +208,21 @@ void CheckAvailableUnits()
         availableUnits.Clear(); // garante que a lista realmente vai estar vazia
         availableUnits.AddRange(units);
         CheckAvailableUnits();
-
     }
 }
 
 // chamado por CheckAvailableUnits() se a unidade tiver capacidade suficiente pra descarregar
 void SendToUnit(int unitIndex)
 {
-    Console.WriteLine($"Truck of plate {trucks.First().Plate} will be sent to unit of code {availableUnits[unitIndex].Code}");
+    Console.WriteLine($"Truck {trucks.First().Plate} will be sent to unit {availableUnits[unitIndex].Code}");
 
     checkLoadValue(); // checa se esse descarregamento foi o mais caro
 
     units[unitIndex].addLoad(trucks.First().UsedCapacity); // adciona a unidade o tanto que ela tá recebendo em kg
-
     checkTotalWeight(units[unitIndex]); // checa de essa mesma unidade é a que mais recebeu
 
     totalUnusedCapacity += trucks.First().RemainingCapacity;
-
     travelledDistance += availableUnits[unitIndex].Distance * 2; // x2 porque deve contar distancia de ida e volta
-
     Console.WriteLine($"Travelled distance: {travelledDistance}");
 
     availableUnits.RemoveAt(unitIndex);
@@ -237,10 +233,16 @@ void SendToUnit(int unitIndex)
 void SendTruckToLast()
 {
     Truck removedtruck = trucks[0];
+
+    // reseta algumas variaveis pra n dar problema quando ele for fazer a segunda viagem
     removedtruck.ResetStorage();
-    removedtruck.ResetValue();
+    removedtruck.ResetTotalValue();
+
+    // tira ele do começo e coloca no final
     trucks.RemoveAt(0);
     trucks.Add(removedtruck);
+
+    // se ainda tem pilhas, ele vai refazer todo o processo de carregar caminhões e procurar unidades
     if (piles.Count() > 0)
     {
         Console.WriteLine($"There still are {piles.Count()} piles left");

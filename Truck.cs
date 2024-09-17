@@ -33,7 +33,7 @@ namespace Logistica
         {
             _remainingCapacity = _capacity;
         }
-        public void ResetValue()
+        public void ResetTotalValue()
         {
             _totalValue = 0;
         }
