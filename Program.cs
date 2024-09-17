@@ -18,11 +18,8 @@ List<Truck> trucks = new List<Truck>(); // lista de caminhoes -> mover o caminh�
 List<Product> products = new List<Product>(); // fila de produtos -> para poder remover o produto da fila
 List<Unit> units = new List<Unit>(); // lista de unidades -> não vai ser necessário mexer na ordem delas ou retirar unidades da lista
 
-// protocolo 4 exige uma pilha de 50 produtos
+// protocolo 4 exige uma pilha de 10 produtos
 int productPileSize = 10; // tamanho da pilha
-// faria sentido usar array já que sempre vai ter 10 elementos, mas isso não é verdade
-// a quantidade de produtos não é multiplo de 10, então a ultima pilha ia dar errado
-// e tb deu certo assim, nao quis mudar
 List<List<Product>> piles = new List<List<Product>>(); // lista que vai armazenar as pilhas
 
 // outras listas
