@@ -51,17 +51,29 @@ units.AddRange(FileReader.GenerateUnits(unidadesPath));
 remainingProducts.AddRange(products);
 availableUnits.AddRange(units);
 
-while (remainingProducts.Count > 0)
+while (remainingProducts.Count() > 0)
 {
     for (int i = 0; i < productPileSize; i++)
     {
-        if (i == 0) { productPile.Clear(); } // garante que a lista vai estar vazia se for a primeira vez fazendo a pilha
-        productPile[i] = remainingProducts.First();
-        remainingProducts.RemoveAt(0);
+        // ?? isso não deveria existir
+        //if (i == 0) { productPile.Clear(); } // garante que a lista vai estar vazia se for a primeira vez fazendo a pilha     
+
+        if (remainingProducts.Count > 0) // checa se ainda tem produto pra colocar na pilha
+        {
+            productPile.Add(remainingProducts.ElementAt(0));
+            remainingProducts.RemoveAt(0); 
+        }
     }
     piles.Add(productPile);
 }
-Console.WriteLine(piles.Count);
+
+Console.WriteLine($"Product piles in storage: {piles.Count()}");
+Console.WriteLine(piles.ElementAt(0).ElementAt(0));
+Console.WriteLine(piles.ElementAt(0).ElementAt(1));
+Console.WriteLine(piles.ElementAt(1).ElementAt(0));
+
+remainingProducts.Clear();
+remainingProducts.AddRange(products);
 
 
 // chama as funcoes responsaveis por caulcular a media de capacidade e distancia
@@ -69,7 +81,7 @@ Console.WriteLine(piles.Count);
 averageTruckCapacity = CalculateAverage.Capacity(trucks);
 averageUnitDistance = CalculateAverage.Distance(units);
 
-bool isProductListEmpty = false;
+bool isProductListEmpty = true; // deve ser false para o programa rodar
 while (!isProductListEmpty) // responvel pelo loop de colocar os produtos nos caminhões
 {
     if (remainingProducts.Count() != 0)
@@ -237,7 +249,10 @@ void checkTotalWeight(Unit unit)
     }
 }
 
-Console.WriteLine($"\n1 - Placa do caminhão que fez a carga de maior valor: {mostValuableTruck.Plate}");
-Console.WriteLine($"2 - Unidade que recebeu maior qtd em kg: {heaviestUnit.Code}");
-Console.WriteLine($"3 - Quilometros percorridos de ida e volta: {travelledDistance}");
-Console.WriteLine($"4 - Quilos de capacidade não utilizados: {totalUnusedCapacity}");
+if (mostValuableTruck != null)
+{
+    Console.WriteLine($"\n1 - Placa do caminhão que fez a carga de maior valor: {mostValuableTruck.Plate}");
+    Console.WriteLine($"2 - Unidade que recebeu maior qtd em kg: {heaviestUnit.Code}");
+    Console.WriteLine($"3 - Quilometros percorridos de ida e volta: {travelledDistance}");
+    Console.WriteLine($"4 - Quilos de capacidade não utilizados: {totalUnusedCapacity}");
+}
