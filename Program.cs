@@ -59,8 +59,7 @@ while (remainingProducts.Count() > 0)
         if (remainingProducts.Count > 0)
         {
             productPile.Add(remainingProducts.ElementAt(0));
-            Console.WriteLine($"Now adding product : {remainingProducts.ElementAt(0)}");
-            Console.WriteLine($"Index: {i}");
+            Console.WriteLine($"Now adding product : {remainingProducts.ElementAt(0)}, index {i}");
             remainingProducts.RemoveAt(0); 
         }
     }
