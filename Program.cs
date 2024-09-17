@@ -13,7 +13,6 @@ List<Unit> units = new List<Unit>(); // lista de unidades -> não vai ser necess
 
 // protocolo 4 exige uma pilha de 50 produtos
 int productPileSize = 50; // tamanho da pilha
-List<Product> productPile = new List<Product>(); // lista que vai de fato representar essas pilhas 
 // faria sentido usar array já que sempre vai ter 50 elementos, mas isso não é verdade
 // a quantidade de produtos não é multiplo de 50, então a ultima pilha ia dar errado
 // e tb deu certo assim, nao quis mudar
@@ -53,14 +52,15 @@ availableUnits.AddRange(units);
 
 while (remainingProducts.Count() > 0)
 {
-    for (int i = 0; i < productPileSize; i++)
-    {
-        // ?? isso não deveria existir
-        //if (i == 0) { productPile.Clear(); } // garante que a lista vai estar vazia se for a primeira vez fazendo a pilha     
+    List<Product> productPile = new List<Product>();
 
-        if (remainingProducts.Count > 0) // checa se ainda tem produto pra colocar na pilha
+    for (int i = 0; i < productPileSize; i++)
+    {  
+        if (remainingProducts.Count > 0)
         {
             productPile.Add(remainingProducts.ElementAt(0));
+            Console.WriteLine($"Now adding product : {remainingProducts.ElementAt(0)}");
+            Console.WriteLine($"Index: {i}");
             remainingProducts.RemoveAt(0); 
         }
     }
